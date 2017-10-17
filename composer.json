@@ -1,0 +1,42 @@
+{
+    "name": "codezero/laravel-unique-translation",
+    "description": "",
+    "keywords": [],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivan Vermeyen",
+            "email": "ivan@codezero.be"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "orchestra/testbench": "~3.5.0",
+        "phpunit/phpunit": "~6.0",
+        "spatie/laravel-translatable": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodeZero\\UniqueTranslation\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CodeZero\\UniqueTranslation\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CodeZero\\UniqueTranslation\\UniqueTranslationServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "sort-packages": true,
+    "optimize-autoloader": true
+}
