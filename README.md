@@ -1,5 +1,10 @@
 # Laravel Unique Translation
 
+[![GitHub release](https://img.shields.io/github/release/codezero-be/laravel-unique-translation.svg)]()
+[![Build Status](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/build.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/build-status/master)
+[![Total Downloads](https://img.shields.io/packagist/dt/codezero/laravel-unique-translation.svg)](https://packagist.org/packages/codezero/laravel-unique-translation)
+[![License](https://img.shields.io/packagist/l/codezero/laravel-unique-translation.svg)]()
+
 #### Check if a translated value in a JSON column is unique in the database.
 
 Imagine you want store a `slug` for a `Post` model in different languages.
