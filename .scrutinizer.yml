@@ -19,9 +19,13 @@ checks:
         fix_doc_comments: true
 
 build:
+    environment:
+        mysql: 5.7
+
     project_setup:
         before:
             - mysql -e "CREATE DATABASE testing"
+
     tests:
         override:
             -
