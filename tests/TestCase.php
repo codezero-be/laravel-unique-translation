@@ -2,12 +2,21 @@
 
 namespace CodeZero\UniqueTranslation\Tests;
 
+use CodeZero\UniqueTranslation\Tests\Stubs\Model;
 use CodeZero\UniqueTranslation\UniqueTranslationServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Route;
 
 abstract class TestCase extends BaseTestCase
 {
+    /**
+     * Database table for the test models.
+     *
+     * @var string
+     */
+    protected $table = 'test_models';
+
     /**
      * Setup the test environment.
      *
@@ -41,16 +50,47 @@ abstract class TestCase extends BaseTestCase
      */
     protected function setupDatabase()
     {
-        $this->app['db']->getSchemaBuilder()->dropIfExists('test_models');
+        $this->app['db']->getSchemaBuilder()->dropIfExists($this->table);
 
-        $this->app['db']->getSchemaBuilder()->create('test_models', function (Blueprint $table) {
+        $this->app['db']->getSchemaBuilder()->create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->text('slug')->nullable();
             $table->string('other_field')->nullable();
         });
 
         $this->beforeApplicationDestroyed(function () {
-            $this->app['db']->getSchemaBuilder()->drop('test_models');
+            $this->app['db']->getSchemaBuilder()->drop($this->table);
         });
+    }
+
+    /**
+     * Create a test route.
+     *
+     * @param string $url
+     * @param array $rules
+     *
+     * @return void
+     */
+    protected function createRoute($url, $rules)
+    {
+        Route::post($url, function () use ($rules) {
+            return request()->validate($rules);
+        });
+    }
+
+    /**
+     * Create a test model.
+     *
+     * @return Model
+     */
+    protected function createModel()
+    {
+        return Model::create([
+            'slug' => [
+                'en' => 'slug-en',
+                'nl' => 'slug-nl',
+            ],
+            'other_field' => 'foobar',
+        ]);
     }
 }

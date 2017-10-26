@@ -2,23 +2,16 @@
 
 namespace CodeZero\UniqueTranslation\Tests;
 
-use CodeZero\UniqueTranslation\Tests\Stubs\TestModel;
-use Illuminate\Contracts\Validation\Factory as Validator;
+use Route;
 
 class UniqueTranslationValidatorTest extends TestCase
 {
     protected $rule = 'unique_translation';
-    protected $table = 'test_models';
 
     /**
-     * @var \CodeZero\UniqueTranslation\Tests\Stubs\TestModel
+     * @var \CodeZero\UniqueTranslation\Tests\Stubs\Model
      */
     protected $model;
-
-    /**
-     * @var \Illuminate\Contracts\Validation\Factory
-     */
-    protected $validator;
 
     /**
      * Setup the test environment.
@@ -31,15 +24,7 @@ class UniqueTranslationValidatorTest extends TestCase
 
         app()->setLocale('en');
 
-        $this->validator = app(Validator::class);
-
-        $this->model = TestModel::create([
-            'slug' => [
-                'en' => 'post-slug-en',
-                'nl' => 'post-slug-nl',
-            ],
-            'other_field' => 'foobar',
-        ]);
+        $this->model = $this->createModel();
     }
 
     /** @test */
@@ -47,11 +32,13 @@ class UniqueTranslationValidatorTest extends TestCase
     {
         $rules = ['slug' => "{$this->rule}:{$this->table}"];
 
-        $validation = $this->validate(['slug' => 'post-slug-en'], $rules);
-        $this->assertFalse($validation->passes());
+        $this->createRoute('test', $rules);
 
-        $validation = $this->validate(['slug' => 'post-slug-nl'], $rules);
-        $this->assertTrue($validation->passes());
+        $this->post('test', ['slug' => 'slug-en'])
+            ->assertSessionHasErrors('slug');
+
+        $this->post('test', ['slug' => 'slug-nl'])
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -59,17 +46,19 @@ class UniqueTranslationValidatorTest extends TestCase
     {
         $rules = ['slug.*' => "{$this->rule}:{$this->table}"];
 
-        $validation = $this->validate(['slug' => ['en' => 'post-slug-en']], $rules);
-        $this->assertFalse($validation->passes());
+        $this->createRoute('test', $rules);
 
-        $validation = $this->validate(['slug' => ['nl' => 'post-slug-nl']], $rules);
-        $this->assertFalse($validation->passes());
+        $this->post('test', ['slug' => ['en' => 'slug-en']])
+            ->assertSessionHasErrors('slug.en');
 
-        $validation = $this->validate(['slug' => ['en' => 'different-post-slug-en']], $rules);
-        $this->assertTrue($validation->passes());
+        $this->post('test', ['slug' => ['nl' => 'slug-nl']])
+            ->assertSessionHasErrors('slug.nl');
 
-        $validation = $this->validate(['slug' => ['nl' => 'different-post-slug-en']], $rules);
-        $this->assertTrue($validation->passes());
+        $this->post('test', ['slug' => ['en' => 'different-slug-en']])
+            ->assertStatus(200);
+
+        $this->post('test', ['slug' => ['nl' => 'different-slug-en']])
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -77,13 +66,17 @@ class UniqueTranslationValidatorTest extends TestCase
     {
         $rules = ['form_slug' => "{$this->rule}:{$this->table},slug"];
 
-        $validation = $this->validate(['form_slug' => 'post-slug-en'], $rules);
-        $this->assertFalse($validation->passes());
+        $this->createRoute('test-single', $rules);
+
+        $this->post('test-single', ['form_slug' => 'slug-en'])
+            ->assertSessionHasErrors('form_slug');
 
         $rules = ['form_slug.*' => "{$this->rule}:{$this->table},slug"];
 
-        $validation = $this->validate(['form_slug' => ['nl' => 'post-slug-nl']], $rules);
-        $this->assertFalse($validation->passes());
+        $this->createRoute('test-array', $rules);
+
+        $this->post('test-array', ['form_slug' => ['nl' => 'slug-nl']])
+            ->assertSessionHasErrors('form_slug.nl');
     }
 
     /** @test */
@@ -91,13 +84,17 @@ class UniqueTranslationValidatorTest extends TestCase
     {
         $rules = ['slug' => "{$this->rule}:{$this->table},slug,{$this->model->id}"];
 
-        $validation = $this->validate(['slug' => 'post-slug-en'], $rules);
-        $this->assertTrue($validation->passes());
+        $this->createRoute('test-single', $rules);
+
+        $this->post('test-single', ['slug' => 'slug-en'])
+            ->assertStatus(200);
 
         $rules = ['slug.*' => "{$this->rule}:{$this->table},slug,{$this->model->id}"];
 
-        $validation = $this->validate(['slug' => ['nl' => 'post-slug-nl']], $rules);
-        $this->assertTrue($validation->passes());
+        $this->createRoute('test-array', $rules);
+
+        $this->post('test-array', ['slug' => ['nl' => 'slug-nl']])
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -105,13 +102,17 @@ class UniqueTranslationValidatorTest extends TestCase
     {
         $rules = ['slug' => "{$this->rule}:{$this->table},slug,{$this->model->other_field},other_field"];
 
-        $validation = $this->validate(['slug' => 'post-slug-en'], $rules);
-        $this->assertTrue($validation->passes());
+        $this->createRoute('test-single', $rules);
+
+        $this->post('test-single', ['slug' => 'slug-en'])
+            ->assertStatus(200);
 
         $rules = ['slug.*' => "{$this->rule}:{$this->table},slug,{$this->model->other_field},other_field"];
 
-        $validation = $this->validate(['slug' => ['nl' => 'post-slug-nl']], $rules);
-        $this->assertTrue($validation->passes());
+        $this->createRoute('test-array', $rules);
+
+        $this->post('test-array', ['slug' => ['nl' => 'slug-nl']])
+            ->assertStatus(200);
     }
 
     /** @test */
@@ -119,22 +120,16 @@ class UniqueTranslationValidatorTest extends TestCase
     {
         $rules = ['form_slug' => "{$this->rule}:{$this->table},slug"];
 
-        $validation = $this->validate(['form_slug' => 'post-slug-en'], $rules);
-        $message = $validation->messages()->first('form_slug');
+        $this->createRoute('test', $rules);
 
-        $this->assertContains('form_slug', $message);
+        $this->post('test', ['form_slug' => 'slug-en']);
+
+        $errors = session('errors');
+        $returnedMessage = $errors->first('form_slug');
+        $expectedMessage = trans('validation.unique', ['attribute' => 'form_slug']);
+
+        $this->assertNotEmpty($returnedMessage);
+        $this->assertEquals($expectedMessage, $returnedMessage);
     }
 
-    /**
-     * Validate the data against the given rules with Laravel's Validator.
-     *
-     * @param array $data
-     * @param array $rules
-     *
-     * @return \Illuminate\Validation\Validator
-     */
-    protected function validate($data, $rules)
-    {
-        return $this->validator->make($data, $rules);
-    }
 }

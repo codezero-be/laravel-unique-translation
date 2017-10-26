@@ -2,10 +2,10 @@
 
 namespace CodeZero\UniqueTranslation\Tests\Stubs;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 use Spatie\Translatable\HasTranslations;
 
-class TestModel extends Model
+class Model extends EloquentModel
 {
     use HasTranslations;
 
