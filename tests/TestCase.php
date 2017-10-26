@@ -2,7 +2,6 @@
 
 namespace CodeZero\UniqueTranslation\Tests;
 
-use CodeZero\UniqueTranslation\Tests\Stubs\Model;
 use CodeZero\UniqueTranslation\UniqueTranslationServiceProvider;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as BaseTestCase;
@@ -32,6 +31,8 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
+     * Get the packages service providers.
+     *
      * @param \Illuminate\Foundation\Application $app
      *
      * @return array
@@ -55,42 +56,12 @@ abstract class TestCase extends BaseTestCase
         $this->app['db']->getSchemaBuilder()->create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->text('slug')->nullable();
+            $table->text('name')->nullable();
             $table->string('other_field')->nullable();
         });
 
         $this->beforeApplicationDestroyed(function () {
             $this->app['db']->getSchemaBuilder()->drop($this->table);
         });
-    }
-
-    /**
-     * Create a test route.
-     *
-     * @param string $url
-     * @param array $rules
-     *
-     * @return void
-     */
-    protected function createRoute($url, $rules)
-    {
-        Route::post($url, function () use ($rules) {
-            return request()->validate($rules);
-        });
-    }
-
-    /**
-     * Create a test model.
-     *
-     * @return Model
-     */
-    protected function createModel()
-    {
-        return Model::create([
-            'slug' => [
-                'en' => 'slug-en',
-                'nl' => 'slug-nl',
-            ],
-            'other_field' => 'foobar',
-        ]);
     }
 }

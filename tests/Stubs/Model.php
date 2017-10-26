@@ -9,7 +9,7 @@ class Model extends EloquentModel
 {
     use HasTranslations;
 
-    public $translatable = ['slug'];
+    public $translatable = ['slug', 'name'];
 
     protected $table = 'test_models';
 
