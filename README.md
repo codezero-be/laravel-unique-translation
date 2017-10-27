@@ -1,9 +1,11 @@
 # Laravel Unique Translation
 
 [![GitHub release](https://img.shields.io/github/release/codezero-be/laravel-unique-translation.svg)]()
-[![Build Status](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/build.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/build-status/master)
-[![Total Downloads](https://img.shields.io/packagist/dt/codezero/laravel-unique-translation.svg)](https://packagist.org/packages/codezero/laravel-unique-translation)
 [![License](https://img.shields.io/packagist/l/codezero/laravel-unique-translation.svg)]()
+[![Build Status](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/build.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/codezero/laravel-unique-translation.svg)](https://packagist.org/packages/codezero/laravel-unique-translation)
 
 #### Check if a translated value in a JSON column is unique in the database.
 
