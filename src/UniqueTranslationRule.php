@@ -34,6 +34,19 @@ class UniqueTranslationRule
      *
      * @param string $table
      * @param string|null $column
+     *
+     * @return static
+     */
+    public static function for($table, $column = null)
+    {
+        return new static($table, $column);
+    }
+
+    /**
+     * Create a new rule instance.
+     *
+     * @param string $table
+     * @param string|null $column
      */
     public function __construct($table, $column = null)
     {

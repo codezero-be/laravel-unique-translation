@@ -44,7 +44,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'slug' => "{$this->rule}:{$this->table}",
-            'name' => new UniqueTranslationRule($this->table),
+            'name' => UniqueTranslationRule::for($this->table),
         ];
 
         $this->createRoute('test', $rules);
@@ -65,7 +65,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'slug.*' => "{$this->rule}:{$this->table}",
-            'name.*' => new UniqueTranslationRule($this->table),
+            'name.*' => UniqueTranslationRule::for($this->table),
         ];
 
         $this->createRoute('test', $rules);
@@ -96,7 +96,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'form_slug' => "{$this->rule}:{$this->table},slug",
-            'form_name' => new UniqueTranslationRule($this->table, 'name'),
+            'form_name' => UniqueTranslationRule::for($this->table, 'name'),
         ];
 
         $this->createRoute('test-single', $rules);
@@ -108,7 +108,7 @@ class UniqueTranslationTest extends TestCase
 
         $rules = [
             'form_slug.*' => "{$this->rule}:{$this->table},slug",
-            'form_name.*' => new UniqueTranslationRule($this->table, 'name'),
+            'form_name.*' => UniqueTranslationRule::for($this->table, 'name'),
         ];
 
         $this->createRoute('test-array', $rules);
@@ -124,7 +124,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'slug' => "{$this->rule}:{$this->table},slug,{$this->model->id}",
-            'name' => (new UniqueTranslationRule($this->table))->ignore($this->model->id),
+            'name' => UniqueTranslationRule::for($this->table)->ignore($this->model->id),
         ];
 
         $this->createRoute('test-single', $rules);
@@ -136,7 +136,7 @@ class UniqueTranslationTest extends TestCase
 
         $rules = [
             'slug.*' => "{$this->rule}:{$this->table},slug,{$this->model->id}",
-            'name.*' => (new UniqueTranslationRule($this->table))->ignore($this->model->id),
+            'name.*' => UniqueTranslationRule::for($this->table)->ignore($this->model->id),
         ];
 
         $this->createRoute('test-array', $rules);
@@ -152,7 +152,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'slug' => "{$this->rule}:{$this->table},slug,{$this->model->other_field},other_field",
-            'name' => (new UniqueTranslationRule($this->table))->ignore($this->model->other_field, 'other_field'),
+            'name' => UniqueTranslationRule::for($this->table)->ignore($this->model->other_field, 'other_field'),
         ];
 
         $this->createRoute('test-single', $rules);
@@ -164,7 +164,7 @@ class UniqueTranslationTest extends TestCase
 
         $rules = [
             'slug.*' => "{$this->rule}:{$this->table},slug,{$this->model->other_field},other_field",
-            'name.*' => (new UniqueTranslationRule($this->table))->ignore($this->model->other_field, 'other_field'),
+            'name.*' => UniqueTranslationRule::for($this->table)->ignore($this->model->other_field, 'other_field'),
         ];
 
         $this->createRoute('test-array', $rules);
@@ -180,7 +180,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'form_slug' => "{$this->rule}:{$this->table},slug",
-            'form_name' => new UniqueTranslationRule($this->table, 'name'),
+            'form_name' => UniqueTranslationRule::for($this->table, 'name'),
         ];
 
         $this->createRoute('test', $rules);
@@ -219,7 +219,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'form_slug.*' => "{$this->rule}:{$this->table},slug",
-            'form_name.*' => new UniqueTranslationRule($this->table, 'name'),
+            'form_name.*' => UniqueTranslationRule::for($this->table, 'name'),
         ];
 
         $this->createRoute('test', $rules);
@@ -258,7 +258,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'form_slug' => "{$this->rule}:{$this->table},slug",
-            'form_name' => new UniqueTranslationRule($this->table, 'name'),
+            'form_name' => UniqueTranslationRule::for($this->table, 'name'),
         ];
 
         $messages = [
@@ -302,7 +302,7 @@ class UniqueTranslationTest extends TestCase
     {
         $rules = [
             'form_slug.*' => "{$this->rule}:{$this->table},slug",
-            'form_name.*' => new UniqueTranslationRule($this->table, 'name'),
+            'form_name.*' => UniqueTranslationRule::for($this->table, 'name'),
         ];
 
         $messages = [
