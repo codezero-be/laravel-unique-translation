@@ -47,7 +47,7 @@ We can then check if it is unique **in the current locale**:
 
 ```php
 $attributes = request()->validate([
-    'slug' => ['unique_translation:posts'],
+    'slug' => 'required|unique_translation:posts',
 ]);
 ```
 
@@ -57,7 +57,7 @@ You could also use the Rule instance:
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 
 $attributes = request()->validate([
-    'slug' => [new UniqueTranslationRule('posts')],
+    'slug' => ['required', UniqueTranslationRule::for('posts')],
 ]);
 ```
 
@@ -74,9 +74,9 @@ We need to validate the entire array in this case. Mind the `slug.*` key.
 
 ```php
 $attributes = request()->validate([
-    'slug.*' => ['unique_translation:posts'],
+    'slug.*' => 'unique_translation:posts',
     // or...
-    'slug.*' => [new UniqueTranslationRule('posts')],
+    'slug.*' => UniqueTranslationRule::for('posts'),
 ]);
 ```
 
@@ -86,9 +86,9 @@ Maybe your form field has a name of `post_slug` and your database field `slug`:
 
 ```php
 $attributes = request()->validate([
-    'post_slug.*' => ['unique_translation:posts,slug'],
+    'post_slug.*' => 'unique_translation:posts,slug',
     // or...
-    'post_slug.*' => [new UniqueTranslationRule('posts', 'slug')],
+    'post_slug.*' => UniqueTranslationRule::for('posts', 'slug'),
 ]);
 ```
 
@@ -98,9 +98,9 @@ If you're updating a record, you may want to ignore the post itself from the uni
 
 ```php
 $attributes = request()->validate([
-    'slug.*' => ["unique_translation:posts,slug,{$post->id}"],
+    'slug.*' => "unique_translation:posts,slug,{$post->id}",
     // or...
-    'slug.*' => [(new UniqueTranslationRule('posts'))->ignore($post->id)],
+    'slug.*' => UniqueTranslationRule::for('posts')->ignore($post->id),
 ]);
 ```
 
@@ -110,9 +110,9 @@ If your ID column has a different name, or you just want to use another column:
 
 ```php
 $attributes = request()->validate([
-    'slug.*' => ['unique_translation:posts,slug,ignore_value,ignore_column'],
+    'slug.*' => 'unique_translation:posts,slug,ignore_value,ignore_column',
     // or...
-    'slug.*' => [(new UniqueTranslationRule('posts'))->ignore('ignore_value', 'ignore_column')],
+    'slug.*' => UniqueTranslationRule::for('posts')->ignore('ignore_value', 'ignore_column'),
 ]);
 ```
 
@@ -139,7 +139,7 @@ Your validation logic:
 
 ```php
 $attributes = request()->validate([
-    'slug.*' => ['unique_translation:posts'],
+    'slug.*' => 'unique_translation:posts',
 ]);
 ```
 
@@ -147,6 +147,26 @@ The result is that `slug[en]` is valid, since the only `en` value in the databas
 
 And `slug[nl]` would fail, because there already is a `nl` value of `abc`.
 
+## Error Messages
+
+Whether you are validating a single translation (`'slug'`) or an array of translations (`'slug.*'`), if validation fails, you will find an error for both the single and the localized key:
+
+```php
+$errors->first('slug');
+$errors->first('slug.en');
+```
+
+You can pass your own error message with any of the following keys. The first one found will be used.
+
+```php
+$attributes = request()->validate([
+    'slug.*' => 'unique_translation:posts',
+], [
+    'slug.unique_translation' => 'Your custom :attribute error.',
+    'slug.*.unique_translation' => 'Your custom :attribute error.',
+    'slug.en.unique_translation' => 'Your custom :attribute error.',
+]);
+```
 
 ## Testing
 
