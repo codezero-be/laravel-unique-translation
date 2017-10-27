@@ -176,7 +176,7 @@ class UniqueTranslationTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_a_default_error_message()
+    public function it_returns_a_default_error_message_when_validating_a_single_translation()
     {
         $rules = [
             'form_slug' => "{$this->rule}:{$this->table},slug",
@@ -214,18 +214,146 @@ class UniqueTranslationTest extends TestCase
         $this->assertEquals($expectedNameError, $returnedNameArrayError);
     }
 
+    /** @test */
+    public function it_returns_a_default_error_message_when_validating_an_array()
+    {
+        $rules = [
+            'form_slug.*' => "{$this->rule}:{$this->table},slug",
+            'form_name.*' => new UniqueTranslationRule($this->table, 'name'),
+        ];
+
+        $this->createRoute('test', $rules);
+
+        $this->post('test', [
+            'form_slug' => ['en' => 'slug-en'],
+            'form_name' => ['en' => 'name-en'],
+        ]);
+
+        $expectedSlugError = trans('validation.unique', ['attribute' => 'form slug']);
+        $expectedNameError = trans('validation.unique', ['attribute' => 'form name']);
+
+        $errors = session('errors');
+
+        $returnedSlugError = $errors->first('form_slug');
+        $returnedNameError = $errors->first('form_name');
+
+        $this->assertNotEmpty($returnedSlugError);
+        $this->assertNotEmpty($returnedNameError);
+
+        $this->assertEquals($expectedSlugError, $returnedSlugError);
+        $this->assertEquals($expectedNameError, $returnedNameError);
+
+        $returnedSlugArrayError = $errors->first('form_slug.en');
+        $returnedNameArrayError = $errors->first('form_name.en');
+
+        $this->assertNotEmpty($returnedSlugArrayError);
+        $this->assertNotEmpty($returnedNameArrayError);
+
+        $this->assertEquals($expectedSlugError, $returnedSlugArrayError);
+        $this->assertEquals($expectedNameError, $returnedNameArrayError);
+    }
+
+    /** @test */
+    public function it_returns_a_custom_error_message_when_validating_a_single_translation()
+    {
+        $rules = [
+            'form_slug' => "{$this->rule}:{$this->table},slug",
+            'form_name' => new UniqueTranslationRule($this->table, 'name'),
+        ];
+
+        $messages = [
+            "form_slug.{$this->rule}" => 'Custom slug message for :attribute.',
+            "form_name.{$this->rule}" => 'Custom name message for :attribute.',
+        ];
+
+        $this->createRoute('test', $rules, $messages);
+
+        $this->post('test', [
+            'form_slug' => 'slug-en',
+            'form_name' => 'name-en',
+        ]);
+
+        $expectedSlugError = 'Custom slug message for form slug.';
+        $expectedNameError = 'Custom name message for form name.';
+
+        $errors = session('errors');
+
+        $returnedSlugError = $errors->first('form_slug');
+        $returnedNameError = $errors->first('form_name');
+
+        $this->assertNotEmpty($returnedSlugError);
+        $this->assertNotEmpty($returnedNameError);
+
+        $this->assertEquals($expectedSlugError, $returnedSlugError);
+        $this->assertEquals($expectedNameError, $returnedNameError);
+
+        $returnedSlugArrayError = $errors->first('form_slug.en');
+        $returnedNameArrayError = $errors->first('form_name.en');
+
+        $this->assertNotEmpty($returnedSlugArrayError);
+        $this->assertNotEmpty($returnedNameArrayError);
+
+        $this->assertEquals($expectedSlugError, $returnedSlugArrayError);
+        $this->assertEquals($expectedNameError, $returnedNameArrayError);
+    }
+
+    /** @test */
+    public function it_returns_a_custom_error_message_when_validating_an_array()
+    {
+        $rules = [
+            'form_slug.*' => "{$this->rule}:{$this->table},slug",
+            'form_name.*' => new UniqueTranslationRule($this->table, 'name'),
+        ];
+
+        $messages = [
+            "form_slug.*.{$this->rule}" => 'Custom slug message for :attribute.',
+            "form_name.*.{$this->rule}" => 'Custom name message for :attribute.',
+        ];
+
+        $this->createRoute('test', $rules, $messages);
+
+        $this->post('test', [
+            'form_slug' => ['en' => 'slug-en'],
+            'form_name' => ['en' => 'name-en'],
+        ]);
+
+        $expectedSlugError = 'Custom slug message for form slug.';
+        $expectedNameError = 'Custom name message for form name.';
+
+        $errors = session('errors');
+
+        $returnedSlugError = $errors->first('form_slug');
+        $returnedNameError = $errors->first('form_name');
+
+        $this->assertNotEmpty($returnedSlugError);
+        $this->assertNotEmpty($returnedNameError);
+
+        $this->assertEquals($expectedSlugError, $returnedSlugError);
+        $this->assertEquals($expectedNameError, $returnedNameError);
+
+        $returnedSlugArrayError = $errors->first('form_slug.en');
+        $returnedNameArrayError = $errors->first('form_name.en');
+
+        $this->assertNotEmpty($returnedSlugArrayError);
+        $this->assertNotEmpty($returnedNameArrayError);
+
+        $this->assertEquals($expectedSlugError, $returnedSlugArrayError);
+        $this->assertEquals($expectedNameError, $returnedNameArrayError);
+    }
+
     /**
      * Create a test route.
      *
      * @param string $url
      * @param array $rules
+     * @param array $messages
      *
      * @return void
      */
-    protected function createRoute($url, $rules)
+    protected function createRoute($url, $rules, $messages = [])
     {
-        Route::post($url, function () use ($rules) {
-            return request()->validate($rules);
+        Route::post($url, function () use ($rules, $messages) {
+            return request()->validate($rules, $messages);
         });
     }
 }
