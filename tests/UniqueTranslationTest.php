@@ -193,8 +193,8 @@ class UniqueTranslationTest extends TestCase
         $errors = session('errors');
         $returnedSlugError = $errors->first('form_slug');
         $returnedNameError = $errors->first('form_name');
-        $expectedSlugError = trans('validation.unique', ['attribute' => 'form_slug']);
-        $expectedNameError = trans('validation.unique', ['attribute' => 'form_name']);
+        $expectedSlugError = trans('validation.unique', ['attribute' => 'form slug']);
+        $expectedNameError = trans('validation.unique', ['attribute' => 'form name']);
 
         $this->assertNotEmpty($returnedSlugError);
         $this->assertNotEmpty($returnedNameError);

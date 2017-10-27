@@ -85,9 +85,7 @@ class UniqueTranslationRule implements Rule
      */
     public function message()
     {
-        return trans('validation.unique', [
-            'attribute' => $this->attribute,
-        ]);
+        return trans('validation.unique');
     }
 
     /**
