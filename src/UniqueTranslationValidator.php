@@ -37,9 +37,9 @@ class UniqueTranslationValidator
     /**
      * Filter NULL values.
      *
-     * @param string|null $value
+     * @param mixed $value
      *
-     * @return string|null
+     * @return mixed
      */
     protected function filterNullValues($value)
     {
@@ -55,7 +55,7 @@ class UniqueTranslationValidator
     /**
      * Check if a translation is unique.
      *
-     * @param mixed $value
+     * @param string $value
      * @param string $locale
      * @param string $table
      * @param string $column
@@ -80,7 +80,7 @@ class UniqueTranslationValidator
      * @param string $table
      * @param string $column
      * @param string $locale
-     * @param mixed $value
+     * @param string $value
      *
      * @return \Illuminate\Database\Query\Builder
      */
