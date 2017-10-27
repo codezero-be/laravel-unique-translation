@@ -52,7 +52,7 @@ class UniqueTranslationTest extends TestCase
         $this->post('test', [
             'slug' => 'slug-en',
             'name' => 'name-en',
-        ])->assertSessionHasErrors(['slug', 'name']);
+        ])->assertSessionHasErrors(['slug', 'name', 'slug.en', 'name.en']);
 
         $this->post('test', [
             'slug' => 'slug-nl',
@@ -73,12 +73,12 @@ class UniqueTranslationTest extends TestCase
         $this->post('test', [
             'slug' => ['en' => 'slug-en'],
             'name' => ['en' => 'name-en'],
-        ])->assertSessionHasErrors(['slug.en', 'name.en']);
+        ])->assertSessionHasErrors(['slug', 'name', 'slug.en', 'name.en']);
 
         $this->post('test', [
             'slug' => ['nl' => 'slug-nl'],
             'name' => ['nl' => 'name-nl'],
-        ])->assertSessionHasErrors(['slug.nl', 'name.nl']);
+        ])->assertSessionHasErrors(['slug', 'name', 'slug.nl', 'name.nl']);
 
         $this->post('test', [
             'slug' => ['en' => 'different-slug-en'],
@@ -104,7 +104,7 @@ class UniqueTranslationTest extends TestCase
         $this->post('test-single', [
             'form_slug' => 'slug-en',
             'form_name' => 'name-en',
-        ])->assertSessionHasErrors(['form_slug', 'form_name']);
+        ])->assertSessionHasErrors(['form_slug', 'form_name', 'form_slug.en', 'form_name.en']);
 
         $rules = [
             'form_slug.*' => "{$this->rule}:{$this->table},slug",
@@ -116,7 +116,7 @@ class UniqueTranslationTest extends TestCase
         $this->post('test-array', [
             'form_slug' => ['nl' => 'slug-nl'],
             'form_name' => ['nl' => 'name-nl'],
-        ])->assertSessionHasErrors(['form_slug.nl', 'form_name.nl']);
+        ])->assertSessionHasErrors(['form_slug', 'form_name', 'form_slug.nl', 'form_name.nl']);
     }
 
     /** @test */
@@ -176,7 +176,7 @@ class UniqueTranslationTest extends TestCase
     }
 
     /** @test */
-    public function it_returns_the_correct_error_message()
+    public function it_returns_a_default_error_message()
     {
         $rules = [
             'form_slug' => "{$this->rule}:{$this->table},slug",
@@ -190,16 +190,28 @@ class UniqueTranslationTest extends TestCase
             'form_name' => 'name-en',
         ]);
 
-        $errors = session('errors');
-        $returnedSlugError = $errors->first('form_slug');
-        $returnedNameError = $errors->first('form_name');
         $expectedSlugError = trans('validation.unique', ['attribute' => 'form slug']);
         $expectedNameError = trans('validation.unique', ['attribute' => 'form name']);
 
+        $errors = session('errors');
+
+        $returnedSlugError = $errors->first('form_slug');
+        $returnedNameError = $errors->first('form_name');
+
         $this->assertNotEmpty($returnedSlugError);
         $this->assertNotEmpty($returnedNameError);
+
         $this->assertEquals($expectedSlugError, $returnedSlugError);
         $this->assertEquals($expectedNameError, $returnedNameError);
+
+        $returnedSlugArrayError = $errors->first('form_slug.en');
+        $returnedNameArrayError = $errors->first('form_name.en');
+
+        $this->assertNotEmpty($returnedSlugArrayError);
+        $this->assertNotEmpty($returnedNameArrayError);
+
+        $this->assertEquals($expectedSlugError, $returnedSlugArrayError);
+        $this->assertEquals($expectedNameError, $returnedNameArrayError);
     }
 
     /**

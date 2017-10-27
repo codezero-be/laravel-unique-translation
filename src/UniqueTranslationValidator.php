@@ -18,18 +18,18 @@ class UniqueTranslationValidator
      */
     public function validate($attribute, $value, $parameters, $validator) {
         $attributeParts = explode('.', $attribute);
-        $attribute = $attributeParts[0];
+        $name = $attributeParts[0];
         $locale = $attributeParts[1] ?? app()->getLocale();
         $table = $parameters[0] ?? null;
-        $column = $this->filterNullValues($parameters[1] ?? null) ?: $attribute;
+        $column = $this->filterNullValues($parameters[1] ?? null) ?: $name;
         $ignoreValue = $this->filterNullValues($parameters[2] ?? null);
         $ignoreColumn = $this->filterNullValues($parameters[3] ?? null);
 
         $isUnique = $this->isUnique($value, $locale, $table, $column, $ignoreValue, $ignoreColumn);
 
-        $validator->setCustomMessages([
-            'unique_translation' => trans('validation.unique'),
-        ]);
+        if ( ! $isUnique) {
+            $this->addErrorsToValidator($validator, $attribute, $parameters, $name, $locale);
+        }
 
         return $isUnique;
     }
@@ -109,5 +109,30 @@ class UniqueTranslationValidator
         }
 
         return $query;
+    }
+
+    /**
+     * Add error messages to the validator.
+     *
+     * @param \Illuminate\Validation\Validator $validator
+     * @param string $attribute
+     * @param array $parameters
+     * @param string $name
+     * @param string $locale
+     *
+     * @return void
+     */
+    protected function addErrorsToValidator($validator, $attribute, $parameters, $name, $locale)
+    {
+        $message = trans('validation.unique');
+        $rule = 'unique_translation';
+
+        // This Validator method will format the placeholders:
+        // eg. "post_slug" will become "post slug".
+        $formattedMessage = $validator->makeReplacements($message, $attribute, $rule, $parameters);
+
+        $validator->errors()
+            ->add($name, $formattedMessage)
+            ->add("{$name}.{$locale}", $formattedMessage);
     }
 }
