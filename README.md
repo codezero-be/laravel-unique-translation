@@ -178,6 +178,10 @@ vendor/bin/phpunit
 
 If you discover any security related issues, please [e-mail me](mailto:ivan@codezero.be) instead of using the issue tracker.
 
+## Changelog
+
+See a list of important changes in the [changelog](https://github.com/codezero-be/laravel-unique-translation/blob/master/CHANGELOG.md).
+
 ## License
 
 The MIT License (MIT). Please see [License File](https://github.com/codezero-be/laravel-unique-translation/blob/master/LICENSE.md) for more information.
