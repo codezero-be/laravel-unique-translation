@@ -21,11 +21,11 @@ class UniqueTranslationValidator
         $attribute = $attributeParts[0];
         $locale = $attributeParts[1] ?? app()->getLocale();
         $table = $parameters[0] ?? null;
-        $column = $parameters[1] ?? null;
-        $ignoreValue = $parameters[2] ?? null;
-        $ignoreColumn = $parameters[3] ?? null;
+        $column = $this->filterNullValues($parameters[1] ?? null) ?: $attribute;
+        $ignoreValue = $this->filterNullValues($parameters[2] ?? null);
+        $ignoreColumn = $this->filterNullValues($parameters[3] ?? null);
 
-        $isUnique = $this->isUnique($attribute, $locale, $value, $table, $column, $ignoreValue, $ignoreColumn);
+        $isUnique = $this->isUnique($value, $locale, $table, $column, $ignoreValue, $ignoreColumn);
 
         $validator->setCustomMessages([
             'unique_translation' => trans('validation.unique'),
@@ -35,22 +35,37 @@ class UniqueTranslationValidator
     }
 
     /**
+     * Filter NULL values.
+     *
+     * @param string|null $value
+     *
+     * @return string|null
+     */
+    protected function filterNullValues($value)
+    {
+        $nullValues = ['null', 'NULL'];
+
+        if (in_array($value, $nullValues)) {
+            return null;
+        }
+
+        return $value;
+    }
+
+    /**
      * Check if a translation is unique.
      *
-     * @param string $attribute
-     * @param string $locale
      * @param mixed $value
+     * @param string $locale
      * @param string $table
-     * @param string|null $column
+     * @param string $column
      * @param mixed $ignoreValue
      * @param string|null $ignoreColumn
      *
      * @return bool
      */
-    protected function isUnique($attribute, $locale, $value, $table, $column = null, $ignoreValue = null, $ignoreColumn = null)
+    protected function isUnique($value, $locale, $table, $column, $ignoreValue = null, $ignoreColumn = null)
     {
-        $column = $column ?: $attribute;
-
         $query = $this->findTranslation($table, $column, $locale, $value);
         $query = $this->ignore($query, $ignoreColumn, $ignoreValue);
 

@@ -2,35 +2,32 @@
 
 namespace CodeZero\UniqueTranslation;
 
-use DB;
-use Illuminate\Contracts\Validation\Rule;
-
-class UniqueTranslationRule implements Rule
+class UniqueTranslationRule
 {
+    /**
+     * @var string
+     */
+    protected $rule = 'unique_translation';
+
     /**
      * @var string
      */
     protected $table;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $column;
-
-    /**
-     * @var string
-     */
-    protected $attribute;
+    protected $column = null;
 
     /**
      * @var mixed
      */
-    protected $ignoreValue;
+    protected $ignoreValue = null;
 
     /**
-     * @var string
+     * @var string|null
      */
-    protected $ignoreColumn;
+    protected $ignoreColumn = null;
 
     /**
      * Create a new rule instance.
@@ -61,50 +58,19 @@ class UniqueTranslationRule implements Rule
     }
 
     /**
-     * Determine if the validation rule passes.
-     *
-     * @param string $attribute
-     * @param string $value
-     *
-     * @return bool
-     */
-    public function passes($attribute, $value)
-    {
-        $attributes = explode('.', $attribute);
-        $this->attribute = $attributes[0];
-        $this->column = $this->column ?: $attributes[0];
-        $locale = $attributes[1] ?? app()->getLocale();
-
-        return $this->isUnique($this->column, $locale, $value);
-    }
-
-    /**
-     * Get the validation error message.
+     * Generate a string representation of the validation rule.
      *
      * @return string
      */
-    public function message()
+    public function __toString()
     {
-        return trans('validation.unique');
-    }
-
-    /**
-     * Check if the given translated value does not exist in the database.
-     *
-     * @param string $column
-     * @param string $locale
-     * @param string $value
-     *
-     * @return bool
-     */
-    protected function isUnique($column, $locale, $value)
-    {
-        $query = DB::table($this->table)->where("{$column}->{$locale}", '=', $value);
-
-        if ($this->ignoreColumn !== null) {
-            $query = $query->where($this->ignoreColumn, '!=', $this->ignoreValue);
-        }
-
-        return $query->count() === 0;
+        return sprintf(
+            '%s:%s,%s,%s,%s',
+            $this->rule,
+            $this->table,
+            $this->column ?: 'NULL',
+            $this->ignoreValue ?: 'NULL',
+            $this->ignoreColumn ?: 'NULL'
+        );
     }
 }
