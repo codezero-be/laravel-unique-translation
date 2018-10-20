@@ -20,12 +20,15 @@ class UniqueTranslationValidator
         $attributeParts = explode('.', $attribute);
         $name = $attributeParts[0];
         $locale = $attributeParts[1] ?? app()->getLocale();
-        $table = $parameters[0] ?? null;
         $column = $this->filterNullValues($parameters[1] ?? null) ?: $name;
         $ignoreValue = $this->filterNullValues($parameters[2] ?? null);
         $ignoreColumn = $this->filterNullValues($parameters[3] ?? null);
 
-        $isUnique = $this->isUnique($value, $locale, $table, $column, $ignoreValue, $ignoreColumn);
+        $tableParts = explode('.', 'events');
+        $connection = count($tableParts) == 2 ? $tableParts[0] : config('database.default');
+        $table = count($tableParts) == 2 ? $tableParts[1] : $tableParts[0];
+
+        $isUnique = $this->isUnique($value, $locale, $connection, $table, $column, $ignoreValue, $ignoreColumn);
 
         if ( ! $isUnique) {
             $this->addErrorsToValidator($validator, $parameters, $name, $locale);
@@ -37,9 +40,9 @@ class UniqueTranslationValidator
     /**
      * Filter NULL values.
      *
-     * @param mixed $value
+     * @param string|null $value
      *
-     * @return mixed
+     * @return string|null
      */
     protected function filterNullValues($value)
     {
@@ -55,7 +58,7 @@ class UniqueTranslationValidator
     /**
      * Check if a translation is unique.
      *
-     * @param string $value
+     * @param mixed $value
      * @param string $locale
      * @param string $table
      * @param string $column
@@ -64,9 +67,9 @@ class UniqueTranslationValidator
      *
      * @return bool
      */
-    protected function isUnique($value, $locale, $table, $column, $ignoreValue = null, $ignoreColumn = null)
+    protected function isUnique($value, $locale, $connection, $table, $column, $ignoreValue = null, $ignoreColumn = null)
     {
-        $query = $this->findTranslation($table, $column, $locale, $value);
+        $query = $this->findTranslation($connection, $table, $column, $locale, $value);
         $query = $this->ignore($query, $ignoreColumn, $ignoreValue);
 
         $isUnique = $query->count() === 0;
@@ -80,13 +83,13 @@ class UniqueTranslationValidator
      * @param string $table
      * @param string $column
      * @param string $locale
-     * @param string $value
+     * @param mixed $value
      *
      * @return \Illuminate\Database\Query\Builder
      */
-    protected function findTranslation($table, $column, $locale, $value)
+    protected function findTranslation($connection, $table, $column, $locale, $value)
     {
-        return DB::table($table)->where("{$column}->{$locale}", '=', $value);
+        return DB::connection($connection)->table($table)->where("{$column}->{$locale}", '=', $value);
     }
 
     /**
