@@ -24,7 +24,6 @@ class UniqueTranslationValidator
         $ignoreValue = $this->filterNullValues($parameters[2] ?? null);
         $ignoreColumn = $this->filterNullValues($parameters[3] ?? null);
 
-        // dd($parameters);
         $table = $parameters[0] ?? null;
         $tableParts = explode('.', $table);
         $connection = isset($tableParts[1]) ? $tableParts[0] : config('database.default');
