@@ -24,9 +24,11 @@ class UniqueTranslationValidator
         $ignoreValue = $this->filterNullValues($parameters[2] ?? null);
         $ignoreColumn = $this->filterNullValues($parameters[3] ?? null);
 
-        $tableParts = explode('.', 'events');
-        $connection = count($tableParts) == 2 ? $tableParts[0] : config('database.default');
-        $table = count($tableParts) == 2 ? $tableParts[1] : $tableParts[0];
+        // dd($parameters);
+        $table = $parameters[0] ?? null;
+        $tableParts = explode('.', $table);
+        $connection = isset($tableParts[1]) ? $tableParts[0] : config('database.default');
+        $table = $tableParts[1] ?? $tableParts[0];
 
         $isUnique = $this->isUnique($value, $locale, $connection, $table, $column, $ignoreValue, $ignoreColumn);
 
