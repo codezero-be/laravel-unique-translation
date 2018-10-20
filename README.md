@@ -94,6 +94,18 @@ $attributes = request()->validate([
 ]);
 ```
 
+### Specify a Database Connection
+
+If you are using multiple database connections, you can specify which one to use by prepending it to the table name, separated by a dot:
+
+```php
+$attributes = request()->validate([
+    'slug.*' => 'unique_translation:db_connection.posts',
+    // or...
+    'slug.*' => UniqueTranslationRule::for('db_connection.posts'),
+]);
+```
+
 ### Ignore a Record with ID
 
 If you're updating a record, you may want to ignore the post itself from the unique check.
