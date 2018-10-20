@@ -141,9 +141,20 @@ class UniqueTranslationTest extends TestCase
 
         $this->createRoute('test-array', $rules);
 
+        Model::create([
+            'slug' => [
+                'en' => 'another-slug-en',
+                'nl' => 'another-slug-nl',
+            ],
+            'name' => [
+                'en' => 'another-name-en',
+                'fr' => null,
+            ],
+        ]);
+
         $this->post('test-array', [
-            'slug' => ['nl' => 'slug-nl'],
-            'name' => ['nl' => 'name-nl'],
+            'slug' => ['en' => 'slug-en', 'nl' => 'slug-nl'],
+            'name' => ['en' => 'name-en', 'fr' => null],
         ])->assertStatus(200);
     }
 
