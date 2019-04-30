@@ -10,24 +10,32 @@ class UniqueTranslationRule
     protected $rule = 'unique_translation';
 
     /**
+     * The table to run the query against.
+     *
      * @var string
      */
     protected $table;
 
     /**
+     * The column to check on.
+     *
      * @var string|null
      */
-    protected $column = null;
+    protected $column;
 
     /**
+     * The value of the the 'ignoreColumn' to ignore.
+     *
      * @var mixed
      */
-    protected $ignoreValue = null;
+    protected $ignoreValue;
 
     /**
+     * The name of the 'ignoreColumn'.
+     *
      * @var string|null
      */
-    protected $ignoreColumn = null;
+    protected $ignoreColumn;
 
     /**
      * Create a new rule instance.
