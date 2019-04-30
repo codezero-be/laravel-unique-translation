@@ -2,6 +2,8 @@
 
 namespace CodeZero\UniqueTranslation;
 
+use App;
+use Config;
 use DB;
 
 class UniqueTranslationValidator
@@ -16,60 +18,99 @@ class UniqueTranslationValidator
      *
      * @return bool
      */
-    public function validate($attribute, $value, $parameters, $validator) {
-        $attributeParts = explode('.', $attribute);
-        $name = $attributeParts[0];
-        $locale = $attributeParts[1] ?? app()->getLocale();
-        $column = $this->filterNullValues($parameters[1] ?? null) ?: $name;
-        $ignoreValue = $this->filterNullValues($parameters[2] ?? null);
-        $ignoreColumn = $this->filterNullValues($parameters[3] ?? null);
+    public function validate($attribute, $value, $parameters, $validator)
+    {
+        list ($name, $locale) = $this->getAttributeNameAndLocale($attribute);
 
-        $table = $parameters[0] ?? null;
-        $tableParts = explode('.', $table);
-        $connection = isset($tableParts[1]) ? $tableParts[0] : config('database.default');
-        $table = $tableParts[1] ?? $tableParts[0];
-
-        $isUnique = $this->isUnique($value, $locale, $connection, $table, $column, $ignoreValue, $ignoreColumn);
-
-        if ( ! $isUnique) {
-            $this->addErrorsToValidator($validator, $parameters, $name, $locale);
+        if ($this->isUnique($value, $name, $locale, $parameters)) {
+            return true;
         }
 
-        return $isUnique;
+        $this->addErrorsToValidator($validator, $parameters, $name, $locale);
+
+        return false;
     }
 
     /**
-     * Filter NULL values.
+     * Get the attribute name and locale.
      *
-     * @param string|null $value
+     * @param string $attribute
+     *
+     * @return array
+     */
+    protected function getAttributeNameAndLocale($attribute)
+    {
+        $parts = explode('.', $attribute);
+
+        $name = $parts[0];
+        $locale = $parts[1] ?? App::getLocale();
+
+        return [$name, $locale];
+    }
+
+    /**
+     * Get the database connection and table name.
+     *
+     * @param array $parameters
+     *
+     * @return array
+     */
+    protected function getConnectionAndTable($parameters)
+    {
+        $parts = explode('.', $this->getParameter($parameters, 0));
+
+        $connection = isset($parts[1])
+            ? $parts[0]
+            : Config::get('database.default');
+
+        $table = $parts[1] ?? $parts[0];
+
+        return [$connection, $table];
+    }
+
+    /**
+     * Get the parameter value at the given index.
+     *
+     * @param array $parameters
+     * @param int $index
      *
      * @return string|null
      */
-    protected function filterNullValues($value)
+    protected function getParameter($parameters, $index)
     {
-        $nullValues = ['null', 'NULL'];
+        return $this->convertNullValue($parameters[$index] ?? null);
+    }
 
-        if (in_array($value, $nullValues)) {
-            return null;
-        }
-
-        return $value;
+    /**
+     * Convert any 'NULL' string value to null.
+     *
+     * @param string $value
+     *
+     * @return string|null
+     */
+    protected function convertNullValue($value)
+    {
+        return strtoupper($value) === 'NULL' ? null : $value;
     }
 
     /**
      * Check if a translation is unique.
      *
      * @param mixed $value
+     * @param string $name
      * @param string $locale
-     * @param string $table
-     * @param string $column
-     * @param mixed $ignoreValue
-     * @param string|null $ignoreColumn
+     * @param array $parameters
      *
      * @return bool
      */
-    protected function isUnique($value, $locale, $connection, $table, $column, $ignoreValue = null, $ignoreColumn = null)
+    protected function isUnique($value, $name, $locale, $parameters)
     {
+        list ($connection, $table) = $this->getConnectionAndTable($parameters);
+
+        $column = $this->getParameter($parameters, 1) ?? $name;
+        $ignoreValue = $this->getParameter($parameters, 2);
+        $ignoreColumn = $this->getParameter($parameters, 3);
+
         $query = $this->findTranslation($connection, $table, $column, $locale, $value);
         $query = $this->ignore($query, $ignoreColumn, $ignoreValue);
 
@@ -81,6 +122,7 @@ class UniqueTranslationValidator
     /**
      * Find the given translated value in the database.
      *
+     * @param string $connection
      * @param string $table
      * @param string $column
      * @param string $locale
