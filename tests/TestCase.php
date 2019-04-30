@@ -2,10 +2,11 @@
 
 namespace CodeZero\UniqueTranslation\Tests;
 
+use App;
 use CodeZero\UniqueTranslation\UniqueTranslationServiceProvider;
+use Config;
 use Illuminate\Database\Schema\Blueprint;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Route;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -17,6 +18,13 @@ abstract class TestCase extends BaseTestCase
     protected $table = 'test_models';
 
     /**
+     * Name of the validation rule.
+     *
+     * @var string
+     */
+    protected $rule = 'unique_translation';
+
+    /**
      * Setup the test environment.
      *
      * @return void
@@ -25,7 +33,9 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
-        config()->set('app.key', str_random(32));
+        Config::set('app.key', str_random(32));
+
+        App::setLocale('en');
 
         $this->setupDatabase();
     }
