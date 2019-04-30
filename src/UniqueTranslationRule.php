@@ -2,26 +2,18 @@
 
 namespace CodeZero\UniqueTranslation;
 
+use Illuminate\Validation\Rules\DatabaseRule;
+
 class UniqueTranslationRule
 {
+    use DatabaseRule;
+
     /**
+     * The name of the validation rule.
+     *
      * @var string
      */
     protected $rule = 'unique_translation';
-
-    /**
-     * The table to run the query against.
-     *
-     * @var string
-     */
-    protected $table;
-
-    /**
-     * The column to check on.
-     *
-     * @var string|null
-     */
-    protected $column;
 
     /**
      * The value of the the 'ignoreColumn' to ignore.
@@ -85,13 +77,14 @@ class UniqueTranslationRule
      */
     public function __toString()
     {
-        return sprintf(
-            '%s:%s,%s,%s,%s',
+        return rtrim(sprintf(
+            '%s:%s,%s,%s,%s,%s',
             $this->rule,
             $this->table,
             $this->column ?: 'NULL',
             $this->ignoreValue ?: 'NULL',
-            $this->ignoreColumn ?: 'NULL'
-        );
+            $this->ignoreColumn ?: 'NULL',
+            $this->formatWheres()
+        ), ',');
     }
 }

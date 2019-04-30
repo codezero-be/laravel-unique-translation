@@ -5,6 +5,7 @@ namespace CodeZero\UniqueTranslation;
 use App;
 use Config;
 use DB;
+use Illuminate\Support\Str;
 
 class UniqueTranslationValidator
 {
@@ -113,6 +114,7 @@ class UniqueTranslationValidator
 
         $query = $this->findTranslation($connection, $table, $column, $locale, $value);
         $query = $this->ignore($query, $ignoreColumn, $ignoreValue);
+        $query = $this->addConditions($query, $this->getUniqueExtra($parameters));
 
         $isUnique = $query->count() === 0;
 
@@ -155,6 +157,85 @@ class UniqueTranslationValidator
         }
 
         return $query;
+    }
+
+    /**
+     * Get the extra conditions for a unique rule.
+     * Taken From: \Illuminate\Validation\Concerns\ValidatesAttributes
+     *
+     * @param array $parameters
+     *
+     * @return array
+     */
+    protected function getUniqueExtra($parameters)
+    {
+        if (isset($parameters[4])) {
+            return $this->getExtraConditions(array_slice($parameters, 4));
+        }
+
+        return [];
+    }
+
+    /**
+     * Get the extra conditions for a unique / exists rule.
+     * Taken from: \Illuminate\Validation\Concerns\ValidatesAttributes
+     *
+     * @param array $segments
+     *
+     * @return array
+     */
+    protected function getExtraConditions(array $segments)
+    {
+        $extra = [];
+
+        $count = count($segments);
+
+        for ($i = 0; $i < $count; $i += 2) {
+            $extra[$segments[$i]] = $segments[$i + 1];
+        }
+
+        return $extra;
+    }
+
+    /**
+     * Add the given conditions to the query.
+     * Adapted from: \Illuminate\Validation\DatabasePresenceVerifier
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param array $conditions
+     *
+     * @return \Illuminate\Database\Query\Builder
+     */
+    protected function addConditions($query, $conditions)
+    {
+        foreach ($conditions as $key => $value) {
+            $this->addWhere($query, $key, $value);
+        }
+
+        return $query;
+    }
+
+    /**
+     * Add a "where" clause to the given query.
+     * Taken from: \Illuminate\Validation\DatabasePresenceVerifier
+     *
+     * @param \Illuminate\Database\Query\Builder $query
+     * @param string $key
+     * @param string $extraValue
+     *
+     * @return void
+     */
+    protected function addWhere($query, $key, $extraValue)
+    {
+        if ($extraValue === 'NULL') {
+            $query->whereNull($key);
+        } elseif ($extraValue === 'NOT_NULL') {
+            $query->whereNotNull($key);
+        } elseif (Str::startsWith($extraValue, '!')) {
+            $query->where($key, '!=', mb_substr($extraValue, 1));
+        } else {
+            $query->where($key, $extraValue);
+        }
     }
 
     /**
