@@ -17,14 +17,14 @@ But then you want to make sure each translation is unique for its language.
 
 That's where this package comes in to play.
 
-## Requirements
+## ✅ Requirements
 
 -   PHP >= 7.0
 -   MySQL >= 5.7
 -   [Laravel](https://laravel.com/) >= 5.5
 -   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable)
 
-## Installation
+## 📦 Installation
 
 Require the package via Composer:
 
@@ -33,11 +33,11 @@ composer require codezero/laravel-unique-translation
 ```
 Laravel will automatically register the [ServiceProvider](https://github.com/codezero-be/laravel-unique-translation/blob/master/src/UniqueTranslationServiceProvider.php).
 
-## Usage
+## 🛠 Usage
 
 For the following examples, I will use a `slug` in a `posts` table as the subject of our validation.
 
-### Validate a Single Translation
+### ☑️ Validate a Single Translation
 
 Your form can submit a single slug:
 
@@ -63,7 +63,7 @@ $attributes = request()->validate([
 ]);
 ```
 
-### Validate an Array of Translations
+### ☑️ Validate an Array of Translations
 
 Your form can also submit an array of slugs.
 
@@ -82,7 +82,7 @@ $attributes = request()->validate([
 ]);
 ```
 
-### Specify a Column
+### ☑️ Specify a Column
 
 Maybe your form field has a name of `post_slug` and your database field `slug`:
 
@@ -94,7 +94,7 @@ $attributes = request()->validate([
 ]);
 ```
 
-### Specify a Database Connection
+### ☑️ Specify a Database Connection
 
 If you are using multiple database connections, you can specify which one to use by prepending it to the table name, separated by a dot:
 
@@ -106,7 +106,7 @@ $attributes = request()->validate([
 ]);
 ```
 
-### Ignore a Record with ID
+### ☑️ Ignore a Record with ID
 
 If you're updating a record, you may want to ignore the post itself from the unique check.
 
@@ -118,7 +118,7 @@ $attributes = request()->validate([
 ]);
 ```
 
-### Ignore Records with a Specific Column and Value
+### ☑️ Ignore Records with a Specific Column and Value
 
 If your ID column has a different name, or you just want to use another column:
 
@@ -130,7 +130,7 @@ $attributes = request()->validate([
 ]);
 ```
 
-### Use Additional Where Clauses
+### ☑️ Use Additional Where Clauses
 
 You can add 4 types of where clauses to the rule.
 
@@ -174,7 +174,7 @@ $attributes = request()->validate([
 ]);
 ```
 
-## Example
+## 🖥 Example
 
 Your existing `slug`  column (JSON) in a `posts` table:
 
@@ -205,7 +205,7 @@ The result is that `slug[en]` is valid, since the only `en` value in the databas
 
 And `slug[nl]` would fail, because there already is a `nl` value of `abc`.
 
-## Error Messages
+## ⚠️ Error Messages
 
 Whether you are validating a single translation (`'slug'`) or an array of translations (`'slug.*'`), if validation fails, you will find an error for both the single and the localized key:
 
@@ -226,20 +226,20 @@ $attributes = request()->validate([
 ]);
 ```
 
-## Testing
+## 🚧 Testing
 
 ```
 vendor/bin/phpunit
 ```
 
-## Security
+## 🔐 Security
 
 If you discover any security related issues, please [e-mail me](mailto:ivan@codezero.be) instead of using the issue tracker.
 
-## Changelog
+## 📖 Changelog
 
 See a list of important changes in the [changelog](https://github.com/codezero-be/laravel-unique-translation/blob/master/CHANGELOG.md).
 
-## License
+## 📜 License
 
 The MIT License (MIT). Please see [License File](https://github.com/codezero-be/laravel-unique-translation/blob/master/LICENSE.md) for more information.
