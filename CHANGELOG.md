@@ -2,6 +2,14 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 1.2.0 (2019-05-01)
+
+- Enable the use of extra `where` clauses
+
+## 1.1.1 (2018-10-20)
+
+- Allow adding a database connection to the rule
+
 ## 1.1.0 (2017-10-27)
 
 There has been a lot of refactoring and a few features were added, but none of these should be breaking changes:
