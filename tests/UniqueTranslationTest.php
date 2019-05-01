@@ -22,6 +22,10 @@ class UniqueTranslationTest extends TestCase
             'name' => UniqueTranslationRule::for($this->table),
         ];
 
+        // The following validation fails, because the
+        // current locale is "en", so we actually set
+        // ['en' => 'existing-slug-en'] etc.
+
         $validation = Validator::make([
             'slug' => 'existing-slug-en',
             'name' => 'existing-name-en',
@@ -30,13 +34,14 @@ class UniqueTranslationTest extends TestCase
         $this->assertTrue($validation->fails());
         $this->assertEquals(['slug', 'slug.en', 'name', 'name.en'], $validation->errors()->keys());
 
+        // The following validation passes, because the
+        // current locale is "en", so we actually set
+        // ['en' => 'existing-slug-nl'] etc.
+
         $validation = Validator::make([
             'slug' => 'existing-slug-nl',
             'name' => 'existing-name-nl',
         ], $rules);
-
-        // This passes because the current locale is "en", so we
-        // actually set ['en' => 'existing-slug-nl'] etc.
 
         $this->assertTrue($validation->passes());
         $this->assertEmpty($validation->errors()->keys());
@@ -64,20 +69,20 @@ class UniqueTranslationTest extends TestCase
         $this->assertEquals(['slug', 'slug.en', 'name', 'name.en'], $validation->errors()->keys());
 
         $validation = Validator::make([
-            'slug' => ['nl' => 'existing-slug-nl'],
-            'name' => ['nl' => 'existing-name-nl'],
-        ], $rules);
-
-        $this->assertTrue($validation->fails());
-        $this->assertEquals(['slug', 'slug.nl', 'name', 'name.nl'], $validation->errors()->keys());
-
-        $validation = Validator::make([
             'slug' => ['en' => 'different-slug-en'],
             'name' => ['en' => 'different-name-en'],
         ], $rules);
 
         $this->assertTrue($validation->passes());
         $this->assertEmpty($validation->errors()->keys());
+
+        $validation = Validator::make([
+            'slug' => ['nl' => 'existing-slug-nl'],
+            'name' => ['nl' => 'existing-name-nl'],
+        ], $rules);
+
+        $this->assertTrue($validation->fails());
+        $this->assertEquals(['slug', 'slug.nl', 'name', 'name.nl'], $validation->errors()->keys());
 
         $validation = Validator::make([
             'slug' => ['nl' => 'different-slug-en'],
