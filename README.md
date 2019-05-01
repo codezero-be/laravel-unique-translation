@@ -130,6 +130,50 @@ $attributes = request()->validate([
 ]);
 ```
 
+### Use Additional Where Clauses
+
+You can add 4 types of where clauses to the rule.
+
+#### `where`
+
+```php
+$attributes = request()->validate([
+    'slug.*' => "unique_translation:posts,slug,null,null,column,value",
+    // or...
+    'slug.*' => UniqueTranslationRule::for('posts')->where('column', 'value'),
+]);
+```
+
+#### `whereNot`
+
+```php
+$attributes = request()->validate([
+    'slug.*' => "unique_translation:posts,slug,null,null,column,!value",
+    // or...
+    'slug.*' => UniqueTranslationRule::for('posts')->whereNot('column', 'value'),
+]);
+```
+
+#### `whereNull`
+
+```php
+$attributes = request()->validate([
+    'slug.*' => "unique_translation:posts,slug,null,null,column,NULL",
+    // or...
+    'slug.*' => UniqueTranslationRule::for('posts')->whereNull('column'),
+]);
+```
+
+#### `whereNotNull`
+
+```php
+$attributes = request()->validate([
+    'slug.*' => "unique_translation:posts,slug,null,null,column,NOT_NULL",
+    // or...
+    'slug.*' => UniqueTranslationRule::for('posts')->whereNotNull('column'),
+]);
+```
+
 ## Example
 
 Your existing `slug`  column (JSON) in a `posts` table:
