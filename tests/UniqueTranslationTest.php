@@ -4,6 +4,7 @@ namespace CodeZero\UniqueTranslation\Tests;
 
 use CodeZero\UniqueTranslation\Tests\Stubs\Model;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
+use Config;
 use Validator;
 
 class UniqueTranslationTest extends TestCase
@@ -81,6 +82,38 @@ class UniqueTranslationTest extends TestCase
         $validation = Validator::make([
             'slug' => ['nl' => 'different-slug-en'],
             'name' => ['nl' => 'different-name-en'],
+        ], $rules);
+
+        $this->assertTrue($validation->passes());
+        $this->assertEmpty($validation->errors()->keys());
+    }
+
+    /** @test */
+    public function a_database_connection_can_be_specified()
+    {
+        Model::create([
+            'slug' => ['en' => 'existing-slug-en'],
+            'name' => ['en' => 'existing-name-en'],
+        ]);
+
+        $connection = Config::get('database.default');
+
+        $rules = [
+            'slug' => "{$this->rule}:{$connection}.{$this->table}",
+            'name' => UniqueTranslationRule::for("{$connection}.{$this->table}"),
+        ];
+
+        $validation = Validator::make([
+            'slug' => 'existing-slug-en',
+            'name' => 'existing-name-en',
+        ], $rules);
+
+        $this->assertTrue($validation->fails());
+        $this->assertEquals(['slug', 'slug.en', 'name', 'name.en'], $validation->errors()->keys());
+
+        $validation = Validator::make([
+            'slug' => 'different-slug-en',
+            'name' => 'different-name-en',
         ], $rules);
 
         $this->assertTrue($validation->passes());
