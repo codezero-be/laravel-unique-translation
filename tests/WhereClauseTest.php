@@ -30,7 +30,7 @@ class WhereClauseTestTest extends TestCase
         ]);
 
         $rules = [
-            'slug.*' => "{$this->rule}:{$this->table},slug,null,null,other_field,!foobar",
+            'slug.*' => "{$this->rule}:{$this->table},null,null,null,other_field,!foobar",
             'name.*' => UniqueTranslationRule::for($this->table)->where('other_field', 'not foobar'),
         ];
 
@@ -53,7 +53,7 @@ class WhereClauseTestTest extends TestCase
         ]);
 
         $rules = [
-            'slug.*' => "{$this->rule}:{$this->table},slug,null,null,other_field,!foobar",
+            'slug.*' => "{$this->rule}:{$this->table},null,null,null,other_field,!foobar",
             'name.*' => UniqueTranslationRule::for($this->table)->whereNot('other_field', 'foobar'),
         ];
 
@@ -76,7 +76,7 @@ class WhereClauseTestTest extends TestCase
         ]);
 
         $rules = [
-            'slug.*' => "{$this->rule}:{$this->table},slug,null,null,other_field,NULL",
+            'slug.*' => "{$this->rule}:{$this->table},null,null,null,other_field,NULL",
             'name.*' => UniqueTranslationRule::for($this->table)->whereNull('other_field'),
         ];
 
@@ -99,7 +99,7 @@ class WhereClauseTestTest extends TestCase
         ]);
 
         $rules = [
-            'slug.*' => "{$this->rule}:{$this->table},slug,null,null,other_field,NOT_NULL",
+            'slug.*' => "{$this->rule}:{$this->table},null,null,null,other_field,NOT_NULL",
             'name.*' => UniqueTranslationRule::for($this->table)->whereNotNull('other_field'),
         ];
 

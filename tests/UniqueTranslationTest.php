@@ -164,7 +164,7 @@ class UniqueTranslationTest extends TestCase
         ]);
 
         $rules = [
-            'slug' => "{$this->rule}:{$this->table},slug,{$model->id}",
+            'slug' => "{$this->rule}:{$this->table},null,{$model->id}",
             'name' => UniqueTranslationRule::for($this->table)->ignore($model->id),
         ];
 
@@ -177,7 +177,7 @@ class UniqueTranslationTest extends TestCase
         $this->assertEmpty($validation->errors()->keys());
 
         $rules = [
-            'slug.*' => "{$this->rule}:{$this->table},slug,{$model->id}",
+            'slug.*' => "{$this->rule}:{$this->table},null,{$model->id}",
             'name.*' => UniqueTranslationRule::for($this->table)->ignore($model->id),
         ];
 
@@ -200,7 +200,7 @@ class UniqueTranslationTest extends TestCase
         ]);
 
         $rules = [
-            'slug' => "{$this->rule}:{$this->table},slug,{$model->other_field},other_field",
+            'slug' => "{$this->rule}:{$this->table},null,{$model->other_field},other_field",
             'name' => UniqueTranslationRule::for($this->table)->ignore($model->other_field, 'other_field'),
         ];
 
@@ -213,7 +213,7 @@ class UniqueTranslationTest extends TestCase
         $this->assertEmpty($validation->errors()->keys());
 
         $rules = [
-            'slug.*' => "{$this->rule}:{$this->table},slug,{$model->other_field},other_field",
+            'slug.*' => "{$this->rule}:{$this->table},null,{$model->other_field},other_field",
             'name.*' => UniqueTranslationRule::for($this->table)->ignore($model->other_field, 'other_field'),
         ];
 
@@ -235,8 +235,8 @@ class UniqueTranslationTest extends TestCase
         ]);
 
         $rules = [
-            'slug' => "{$this->rule}:{$this->table},slug",
-            'name' => UniqueTranslationRule::for($this->table, 'name'),
+            'slug.*' => "{$this->rule}:{$this->table}",
+            'name.*' => UniqueTranslationRule::for($this->table),
         ];
 
         $validation = Validator::make([
