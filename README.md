@@ -234,11 +234,16 @@ $attributes = request()->validate([
 vendor/bin/phpunit
 ```
 
-## 🔐 Security
+## ☕️ Credits
+
+- [Ivan Vermeyen](https://byterider.io)
+- [All contributors](../../contributors)
+
+## 🔓 Security
 
 If you discover any security related issues, please [e-mail me](mailto:ivan@codezero.be) instead of using the issue tracker.
 
-## 📖 Changelog
+## 📑 Changelog
 
 See a list of important changes in the [changelog](https://github.com/codezero-be/laravel-unique-translation/blob/master/CHANGELOG.md).
 
