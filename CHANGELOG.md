@@ -2,6 +2,10 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 2.0.0 (2019-10-11)
+
+- Upgrade dependencies to support Laravel 6
+
 ## 1.2.0 (2019-05-01)
 
 - Enable the use of extra `where` clauses

@@ -10,14 +10,14 @@
         }
     ],
     "require": {
-        "php": ">=7.0.0"
+        "php": "^7.2"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "orchestra/testbench": "~3.5.0",
-        "phpunit/phpunit": "~6.0",
-        "spatie/laravel-translatable": "^2.1"
+        "mockery/mockery": "1.2.*",
+        "orchestra/testbench": "~4.0",
+        "phpunit/phpunit": "~8.0",
+        "spatie/laravel-translatable": "^4.2"
     },
     "autoload": {
         "psr-4": {

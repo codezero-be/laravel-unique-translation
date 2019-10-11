@@ -21,10 +21,10 @@ That's where this package comes in to play.
 
 ## ✅ Requirements
 
--   PHP >= 7.0
+-   PHP ^7.2
 -   MySQL >= 5.7
--   [Laravel](https://laravel.com/) >= 5.5
--   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable)
+-   [Laravel](https://laravel.com/) >= 6 (use v1.* for Laravel 5.*)
+-   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.2
 
 ## 📦 Installation
 
