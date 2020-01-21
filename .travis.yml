@@ -6,8 +6,11 @@ php:
     - 7.3
     - 7.4
 
+services:
+    - mysql
+
 env:
-    - DB=mysql:5.7 ILLUMINATE_VERSION=6.* TESTBENCH_VERSION=4.*
+    - ILLUMINATE_VERSION=6.* TESTBENCH_VERSION=4.*
 
 before_script:
     - mysql -e "create database IF NOT EXISTS testing;" -uroot;
