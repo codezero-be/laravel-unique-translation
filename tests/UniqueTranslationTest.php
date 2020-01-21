@@ -80,8 +80,8 @@ class UniqueTranslationTest extends TestCase
         $this->assertTrue($validation->fails());
 
         $validation = Validator::make([
-            'slug' => ['nl' => 'different-slug-en'],
-            'name' => ['nl' => 'different-name-en'],
+            'slug' => ['nl' => 'different-slug-nl'],
+            'name' => ['nl' => 'different-name-nl'],
         ], $rules);
 
         $this->assertTrue($validation->passes());
