@@ -40,7 +40,6 @@ class WhereClauseTestTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -63,7 +62,6 @@ class WhereClauseTestTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -86,7 +84,6 @@ class WhereClauseTestTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -109,6 +106,5 @@ class WhereClauseTestTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 }

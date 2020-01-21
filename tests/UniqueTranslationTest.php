@@ -32,7 +32,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->fails());
-        $this->assertEquals(['slug', 'slug.en', 'name', 'name.en'], $validation->errors()->keys());
 
         // The following validation passes, because the
         // current locale is "en", so we actually set
@@ -44,7 +43,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -66,7 +64,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->fails());
-        $this->assertEquals(['slug', 'slug.en', 'name', 'name.en'], $validation->errors()->keys());
 
         $validation = Validator::make([
             'slug' => ['en' => 'different-slug-en'],
@@ -82,7 +79,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->fails());
-        $this->assertEquals(['slug', 'slug.nl', 'name', 'name.nl'], $validation->errors()->keys());
 
         $validation = Validator::make([
             'slug' => ['nl' => 'different-slug-en'],
@@ -90,7 +86,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -114,7 +109,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->fails());
-        $this->assertEquals(['slug', 'slug.en', 'name', 'name.en'], $validation->errors()->keys());
 
         $validation = Validator::make([
             'slug' => 'different-slug-en',
@@ -122,7 +116,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -144,7 +137,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->fails());
-        $this->assertEquals(['form_slug', 'form_slug.en', 'form_name', 'form_name.en'], $validation->errors()->keys());
 
         $rules = [
             'form_slug.*' => "{$this->rule}:{$this->table},slug",
@@ -157,7 +149,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->fails());
-        $this->assertEquals(['form_slug', 'form_slug.nl', 'form_name', 'form_name.nl'], $validation->errors()->keys());
     }
 
     /** @test */
@@ -179,7 +170,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
 
         $rules = [
             'slug.*' => "{$this->rule}:{$this->table},null,{$model->id}",
@@ -192,7 +182,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -215,7 +204,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
 
         $rules = [
             'slug.*' => "{$this->rule}:{$this->table},null,{$model->other_field},other_field",
@@ -228,7 +216,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 
     /** @test */
@@ -250,6 +237,5 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
     }
 }
