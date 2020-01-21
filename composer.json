@@ -1,7 +1,19 @@
 {
     "name": "codezero/laravel-unique-translation",
-    "description": "",
-    "keywords": [],
+    "description": "Check if a translated value in a JSON column is unique in the database.",
+    "keywords": [
+        "translation",
+        "json",
+        "mysql",
+        "php",
+        "laravel",
+        "validation",
+        "validator",
+        "unique",
+        "rule",
+        "language",
+        "database"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -36,7 +48,11 @@
             ]
         }
     },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
     "minimum-stability": "stable",
-    "sort-packages": true,
-    "optimize-autoloader": true
+    "prefer-stable": true
 }
