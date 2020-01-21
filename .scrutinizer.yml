@@ -17,19 +17,18 @@ checks:
         fix_line_ending: true
         fix_identation_4spaces: true
         fix_doc_comments: true
-
 build:
-    environment:
-        mysql: 5.7
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
 
-    project_setup:
-        before:
-            - mysql -e "CREATE DATABASE testing"
-
-    tests:
-        override:
-            -
-                command: 'vendor/bin/phpunit --coverage-clover=coverage.clover'
-                coverage:
-                    file: 'coverage.clover'
-                    format: 'clover'
+        tests-and-coverage:
+            tests:
+                override:
+                    -
+                        command: 'vendor/bin/phpunit --coverage-clover=coverage.clover'
+                        coverage:
+                            file: 'coverage.clover'
+                            format: 'clover'
