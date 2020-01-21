@@ -4,7 +4,7 @@ namespace CodeZero\UniqueTranslation\Tests;
 
 use CodeZero\UniqueTranslation\Tests\Stubs\Model;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 // * * *
 // You can use any method defined in the DatabaseRule

@@ -2,10 +2,10 @@
 
 namespace CodeZero\UniqueTranslation\Tests;
 
-use App;
 use CodeZero\UniqueTranslation\UniqueTranslationServiceProvider;
-use Config;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Str;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 

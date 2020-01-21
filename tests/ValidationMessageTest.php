@@ -4,7 +4,7 @@ namespace CodeZero\UniqueTranslation\Tests;
 
 use CodeZero\UniqueTranslation\Tests\Stubs\Model;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class ValidationMessageTest extends TestCase
 {

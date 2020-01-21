@@ -4,8 +4,8 @@ namespace CodeZero\UniqueTranslation\Tests;
 
 use CodeZero\UniqueTranslation\Tests\Stubs\Model;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
-use Config;
-use Validator;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Validator;
 
 class UniqueTranslationTest extends TestCase
 {
