@@ -71,7 +71,6 @@ class UniqueTranslationTest extends TestCase
         ], $rules);
 
         $this->assertTrue($validation->passes());
-        $this->assertEmpty($validation->errors()->keys());
 
         $validation = Validator::make([
             'slug' => ['nl' => 'existing-slug-nl'],
