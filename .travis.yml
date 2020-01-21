@@ -1,24 +1,28 @@
 language: php
-
-php:
-  - 7.2
-  - 7.3
-
 dist: xenial
 
-services:
-  - mysql
+php:
+    - 7.2
+    - 7.3
+
+env:
+    - DB=mysql:5.7 ILLUMINATE_VERSION=6.* TESTBENCH_VERSION=4.*
+
+before_script:
+    - mysql -e "create database IF NOT EXISTS testing;" -uroot;
+
+before_install:
+    - travis_retry composer self-update
+    - composer require "orchestra/testbench:${TESTBENCH_VERSION}" --no-update --dev
+    - composer require "illuminate/support:${ILLUMINATE_VERSION}" --no-update
+
+install: composer update --prefer-source --no-interaction
 
 sudo: true
 
 cache:
-  directories:
-    - $HOME/.composer/cache
-
-before_script:
-  - travis_retry composer self-update
-  - travis_retry composer update --no-interaction
-  - mysql -e "create database IF NOT EXISTS testing;" -uroot;
+    directories:
+        - $HOME/.composer/cache
 
 script:
-  - vendor/bin/phpunit
+    - vendor/bin/phpunit
