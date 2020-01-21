@@ -16,15 +16,15 @@ class ValidationMessageTest extends TestCase
             'name' => ['en' => 'existing-name-en'],
         ]);
 
+        $formAttributes = [
+            'form_slug' => 'existing-slug-en',
+            'form_name' => 'existing-name-en',
+        ];
+
         $rules = [
             'form_slug' => "{$this->rule}:{$this->table},slug",
             'form_name' => UniqueTranslationRule::for($this->table, 'name'),
         ];
-
-        $validation = Validator::make([
-            'form_slug' => 'existing-slug-en',
-            'form_name' => 'existing-name-en',
-        ], $rules);
 
         $expectedSlugError = trans('validation.unique', ['attribute' => 'form slug']);
         $expectedNameError = trans('validation.unique', ['attribute' => 'form name']);
@@ -32,11 +32,12 @@ class ValidationMessageTest extends TestCase
         $this->assertNotEmpty($expectedSlugError);
         $this->assertNotEmpty($expectedNameError);
 
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name'));
+        $validation = Validator::make($formAttributes, $rules);
 
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug.en'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name.en'));
+        $this->assertEquals([
+            'form_slug' => [$expectedSlugError],
+            'form_name' => [$expectedNameError],
+        ], $validation->errors()->messages());
     }
 
     /** @test */
@@ -47,27 +48,28 @@ class ValidationMessageTest extends TestCase
             'name' => ['en' => 'existing-name-en'],
         ]);
 
+        $formAttributes = [
+            'form_slug' => ['en' => 'existing-slug-en'],
+            'form_name' => ['en' => 'existing-name-en'],
+        ];
+
         $rules = [
             'form_slug.*' => "{$this->rule}:{$this->table},slug",
             'form_name.*' => UniqueTranslationRule::for($this->table, 'name'),
         ];
 
-        $validation = Validator::make([
-            'form_slug' => ['en' => 'existing-slug-en'],
-            'form_name' => ['en' => 'existing-name-en'],
-        ], $rules);
-
-        $expectedSlugError = trans('validation.unique', ['attribute' => 'form slug']);
-        $expectedNameError = trans('validation.unique', ['attribute' => 'form name']);
+        $expectedSlugError = trans('validation.unique', ['attribute' => 'form_slug.en']);
+        $expectedNameError = trans('validation.unique', ['attribute' => 'form_name.en']);
 
         $this->assertNotEmpty($expectedSlugError);
         $this->assertNotEmpty($expectedNameError);
 
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name'));
+        $validation = Validator::make($formAttributes, $rules);
 
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug.en'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name.en'));
+        $this->assertEquals([
+            'form_slug.en' => [$expectedSlugError],
+            'form_name.en' => [$expectedNameError],
+        ], $validation->errors()->messages());
     }
 
     /** @test */
@@ -77,6 +79,11 @@ class ValidationMessageTest extends TestCase
             'slug' => ['en' => 'existing-slug-en'],
             'name' => ['en' => 'existing-name-en'],
         ]);
+
+        $formAttributes = [
+            'form_slug' => 'existing-slug-en',
+            'form_name' => 'existing-name-en',
+        ];
 
         $rules = [
             'form_slug' => "{$this->rule}:{$this->table},slug",
@@ -88,19 +95,15 @@ class ValidationMessageTest extends TestCase
             "form_name.{$this->rule}" => 'Custom name message for :attribute.',
         ];
 
-        $validation = Validator::make([
-            'form_slug' => 'existing-slug-en',
-            'form_name' => 'existing-name-en',
-        ], $rules, $messages);
-
         $expectedSlugError = 'Custom slug message for form slug.';
         $expectedNameError = 'Custom name message for form name.';
 
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name'));
+        $validation = Validator::make($formAttributes, $rules, $messages);
 
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug.en'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name.en'));
+        $this->assertEquals([
+            'form_slug' => [$expectedSlugError],
+            'form_name' => [$expectedNameError],
+        ], $validation->errors()->messages());
     }
 
     /** @test */
@@ -110,6 +113,11 @@ class ValidationMessageTest extends TestCase
             'slug' => ['en' => 'existing-slug-en'],
             'name' => ['en' => 'existing-name-en'],
         ]);
+
+        $formAttributes = [
+            'form_slug' => ['en' => 'existing-slug-en'],
+            'form_name' => ['en' => 'existing-name-en'],
+        ];
 
         $rules = [
             'form_slug.*' => "{$this->rule}:{$this->table},slug",
@@ -121,18 +129,14 @@ class ValidationMessageTest extends TestCase
             "form_name.*.{$this->rule}" => 'Custom name message for :attribute.',
         ];
 
-        $validation = Validator::make([
-            'form_slug' => ['en' => 'existing-slug-en'],
-            'form_name' => ['en' => 'existing-name-en'],
-        ], $rules, $messages);
+        $expectedSlugError = 'Custom slug message for form_slug.en.';
+        $expectedNameError = 'Custom name message for form_name.en.';
 
-        $expectedSlugError = 'Custom slug message for form slug.';
-        $expectedNameError = 'Custom name message for form name.';
+        $validation = Validator::make($formAttributes, $rules, $messages);
 
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name'));
-
-        $this->assertEquals($expectedSlugError, $validation->errors()->first('form_slug.en'));
-        $this->assertEquals($expectedNameError, $validation->errors()->first('form_name.en'));
+        $this->assertEquals([
+            'form_slug.en' => [$expectedSlugError],
+            'form_name.en' => [$expectedNameError],
+        ], $validation->errors()->messages());
     }
 }
