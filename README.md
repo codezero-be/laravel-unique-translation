@@ -209,24 +209,39 @@ And `slug[nl]` would fail, because there already is a `nl` value of `abc`.
 
 ## ⚠️ Error Messages
 
-Whether you are validating a single translation (`'slug'`) or an array of translations (`'slug.*'`), if validation fails, you will find an error for both the single and the localized key:
+You can pass your own error messages as normal.
 
-```php
-$errors->first('slug');
-$errors->first('slug.en');
+When validating a single form field:
+
+```html
+<input name="slug">
 ```
 
-You can pass your own error message with any of the following keys. The first one found will be used.
+```php
+$attributes = request()->validate([
+    'slug' => 'unique_translation:posts',
+], [
+    'slug.unique_translation' => 'Your custom :attribute error.',
+]);
+```
+
+In your view you can then get the error with `$errors->first('slug')`.
+
+Or when validation an array:
+
+```html
+<input name="slug[en]">
+```
 
 ```php
 $attributes = request()->validate([
     'slug.*' => 'unique_translation:posts',
 ], [
-    'slug.unique_translation' => 'Your custom :attribute error.',
     'slug.*.unique_translation' => 'Your custom :attribute error.',
-    'slug.en.unique_translation' => 'Your custom :attribute error.',
 ]);
 ```
+
+In your view you can then get the error with `$errors->first('slug.en')` (`en` being your array key).
 
 ## 🚧 Testing
 
