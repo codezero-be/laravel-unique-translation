@@ -2,6 +2,10 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 3.0.0 (2020-01-22)
+
+- Show only one error message per validated attribute (#5)
+
 ## 2.0.0 (2019-10-11)
 
 - Upgrade dependencies to support Laravel 6
