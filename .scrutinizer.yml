@@ -25,6 +25,13 @@ build:
                     - php-scrutinizer-run
 
         tests-and-coverage:
+            environment:
+                mysql: 5.7
+
+            project_setup:
+                before:
+                    - mysql -e "CREATE DATABASE testing"
+
             tests:
                 override:
                     -
