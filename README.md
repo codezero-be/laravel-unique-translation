@@ -19,12 +19,15 @@ But then you want to make sure each translation is unique for its language.
 
 That's where this package comes in to play.
 
+This package also supports [`spatie/nova-translatable`](https://github.com/spatie/nova-translatable/) in case you are using [Laravel Nova](https://nova.laravel.com/).
+
 ## ✅ Requirements
 
 -   PHP ^7.2
 -   MySQL >= 5.7
 -   [Laravel](https://laravel.com/) >= 6 (use v1.* for Laravel 5.*)
 -   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.2
+-   [spatie/nova-translatable](https://github.com/spatie/nova-translatable/) ^3.0
 
 ## 📦 Installation
 
@@ -174,6 +177,16 @@ $attributes = request()->validate([
     // or...
     'slug.*' => UniqueTranslationRule::for('posts')->whereNotNull('column'),
 ]);
+```
+
+### ☑️ Laravel Nova
+
+If you are using [Laravel Nova](https://nova.laravel.com/) in combination with  [`spatie/nova-translatable`](https://github.com/spatie/nova-translatable/), then you can add the validation rule like this:
+
+```php
+Text::make(__('Slug'), 'slug')
+  ->creationRules('unique_translation:posts,slug')
+  ->updateRules('unique_translation:posts,slug,{{resourceId}}');
 ```
 
 ## 🖥 Example
