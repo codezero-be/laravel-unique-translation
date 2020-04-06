@@ -2,6 +2,10 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 3.2.0 (2020-04-06)
+
+- Support [spatie/nova-translatable](https://github.com/spatie/nova-translatable/)
+
 ## 3.1.0 (2020-03-03)
 
 - Add support for Laravel 7
