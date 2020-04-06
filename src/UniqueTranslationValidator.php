@@ -21,7 +21,9 @@ class UniqueTranslationValidator
      */
     public function validate($attribute, $value, $parameters, $validator)
     {
-        list ($name, $locale) = $this->getAttributeNameAndLocale($attribute);
+        list ($name, $locale) = $this->isNovaTranslation($attribute)
+            ? $this->getNovaAttributeNameAndLocale($attribute)
+            : $this->getArrayAttributeNameAndLocale($attribute);
 
         if ($this->isUnique($value, $name, $locale, $parameters)) {
             return true;
@@ -49,6 +51,7 @@ class UniqueTranslationValidator
             "{$name}.{$rule}",
             "{$name}.*.{$rule}",
             "{$name}.{$locale}.{$rule}",
+            "translations_{$name}_{$locale}.{$rule}",
         ];
 
         foreach ($keys as $key) {
@@ -59,20 +62,86 @@ class UniqueTranslationValidator
     }
 
     /**
-     * Get the attribute name and locale.
+     * Check if the attribute is a Nova translation field name.
+     *
+     * @param string $attribute
+     *
+     * @return bool
+     */
+    protected function isNovaTranslation($attribute)
+    {
+        return strpos($attribute, '.') === false && strpos($attribute, 'translations_') === 0;
+    }
+
+    /**
+     * Get the attribute name and locale of a Nova translation field.
      *
      * @param string $attribute
      *
      * @return array
      */
-    protected function getAttributeNameAndLocale($attribute)
+    protected function getNovaAttributeNameAndLocale($attribute)
     {
-        $parts = explode('.', $attribute);
+        $attribute = str_replace('translations_', '', $attribute);
 
-        $name = $parts[0];
-        $locale = $parts[1] ?? App::getLocale();
+        return $this->getAttributeNameAndLocale($attribute, '_');
+    }
 
-        return [$name, $locale];
+    /**
+     * Get the attribute name and locale of an array field.
+     *
+     * @param string $attribute
+     *
+     * @return array
+     */
+    protected function getArrayAttributeNameAndLocale($attribute)
+    {
+        return $this->getAttributeNameAndLocale($attribute, '.');
+    }
+
+    /**
+     * Get the attribute name and locale.
+     *
+     * @param string $attribute
+     * @param string $delimiter
+     *
+     * @return array
+     */
+    protected function getAttributeNameAndLocale($attribute, $delimiter)
+    {
+        $locale = $this->getAttributeLocale($attribute, $delimiter);
+        $name = $this->getAttributeName($attribute, $locale, $delimiter);
+
+        return [$name, $locale ?: App::getLocale()];
+    }
+
+    /**
+     * Get the locale from the attribute name.
+     *
+     * @param string $attribute
+     * @param string $delimiter
+     *
+     * @return string|null
+     */
+    protected function getAttributeLocale($attribute, $delimiter)
+    {
+        $pos = strrpos($attribute, $delimiter);
+
+        return $pos > 0 ? substr($attribute, $pos +  1) : null;
+    }
+
+    /**
+     * Get the attribute name without the locale.
+     *
+     * @param string $attribute
+     * @param string|null $locale
+     * @param string $delimiter
+     *
+     * @return string
+     */
+    protected function getAttributeName($attribute, $locale, $delimiter)
+    {
+        return $locale ? str_replace("{$delimiter}{$locale}", '', $attribute) : $attribute;
     }
 
     /**

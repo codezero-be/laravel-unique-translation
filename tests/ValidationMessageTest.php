@@ -139,4 +139,36 @@ class ValidationMessageTest extends TestCase
             'form_name.en' => [$expectedNameError],
         ], $validation->errors()->messages());
     }
+
+    /** @test */
+    public function it_returns_a_default_error_message_when_validating_a_nova_translation()
+    {
+        Model::create([
+            'slug' => ['en' => 'existing-slug-en'],
+            'name' => ['en' => 'existing-name-en'],
+        ]);
+
+        $formAttributes = [
+            'translations_form_slug_en' => ['en' => 'existing-slug-en'],
+            'translations_form_name_en' => ['en' => 'existing-name-en'],
+        ];
+
+        $rules = [
+            'translations_form_slug_en' => "{$this->rule}:{$this->table},slug",
+            'translations_form_name_en' => UniqueTranslationRule::for($this->table, 'name'),
+        ];
+
+        $expectedSlugError = trans('validation.unique', ['attribute' => 'translations form slug en']);
+        $expectedNameError = trans('validation.unique', ['attribute' => 'translations form name en']);
+
+        $this->assertNotEmpty($expectedSlugError);
+        $this->assertNotEmpty($expectedNameError);
+
+        $validation = Validator::make($formAttributes, $rules);
+
+        $this->assertEquals([
+            'translations_form_slug_en' => [$expectedSlugError],
+            'translations_form_name_en' => [$expectedNameError],
+        ], $validation->errors()->messages());
+    }
 }

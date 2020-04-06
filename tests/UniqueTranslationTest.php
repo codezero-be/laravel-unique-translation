@@ -237,4 +237,32 @@ class UniqueTranslationTest extends TestCase
 
         $this->assertTrue($validation->passes());
     }
+
+    /** @test */
+    public function it_validates_nova_translations()
+    {
+        Model::create([
+            'slug' => ['nl' => 'existing-slug-nl'],
+            'name' => ['nl' => 'existing-name-nl'],
+        ]);
+
+        $rules = [
+            'translations_slug_nl' => "{$this->rule}:{$this->table},slug",
+            'translations_name_nl' => UniqueTranslationRule::for($this->table, 'slug'),
+        ];
+
+        $validation = Validator::make([
+            'translations_slug_nl' => 'existing-slug-nl',
+            'translations_name_nl' => 'existing-name-nl',
+        ], $rules);
+
+        $this->assertTrue($validation->fails());
+
+        $validation = Validator::make([
+            'translations_slug_nl' => 'different-slug-nl',
+            'translations_name_nl' => 'different-name-nl',
+        ], $rules);
+
+        $this->assertTrue($validation->passes());
+    }
 }
