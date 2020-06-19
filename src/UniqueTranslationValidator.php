@@ -229,7 +229,7 @@ class UniqueTranslationValidator
      */
     protected function findTranslation($connection, $table, $column, $locale, $value)
     {
-        return DB::connection($connection)->table($table)->where("{$column}->{$locale}", '=', $value);
+        return DB::connection($connection)->table($table)->where($column, 'LIKE', "%\"{$locale}\":\"{$value}\"%");
     }
 
     /**
