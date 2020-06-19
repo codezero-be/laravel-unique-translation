@@ -149,8 +149,8 @@ class ValidationMessageTest extends TestCase
         ]);
 
         $formAttributes = [
-            'translations_form_slug_en' => ['en' => 'existing-slug-en'],
-            'translations_form_name_en' => ['en' => 'existing-name-en'],
+            'translations_form_slug_en' => 'existing-slug-en',
+            'translations_form_name_en' => 'existing-name-en',
         ];
 
         $rules = [
