@@ -2,6 +2,10 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 3.3.0 (2020-06-20)
+
+- Add support for MySQL 5.6 (#11)
+
 ## 3.2.0 (2020-04-06)
 
 - Support [spatie/nova-translatable](https://github.com/spatie/nova-translatable/)
