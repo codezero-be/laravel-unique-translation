@@ -66,7 +66,7 @@ abstract class TestCase extends BaseTestCase
 
         $this->app['db']->getSchemaBuilder()->create($this->table, function (Blueprint $table) {
             $table->increments('id');
-            $table->text('slug')->nullable();
+            $table->json('slug')->nullable();
             $table->text('name')->nullable();
             $table->string('other_field')->nullable();
         });
