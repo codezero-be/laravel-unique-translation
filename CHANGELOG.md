@@ -2,6 +2,14 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 3.3.2 (2020-06-30)
+
+- Escape backslashes to work with LIKE queries (#13)
+
+## 3.3.1 (2020-06-25)
+
+- Support spaces between JSON key/value (#12)
+
 ## 3.3.0 (2020-06-20)
 
 - Add support for MySQL 5.6 (#11)
