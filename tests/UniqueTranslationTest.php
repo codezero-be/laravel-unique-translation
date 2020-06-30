@@ -265,4 +265,40 @@ class UniqueTranslationTest extends TestCase
 
         $this->assertTrue($validation->passes());
     }
+
+    /** @test */
+    public function it_handles_backslashes_in_values()
+    {
+        Model::create([
+            'slug' => ['en' => '\existing-slug-en', 'nl' => '\existing-slug-nl'],
+            'name' => ['en' => '\existing-name-en', 'nl' => '\existing-name-nl'],
+        ]);
+
+        $rules = [
+            'slug' => "{$this->rule}:{$this->table}",
+            'name' => UniqueTranslationRule::for($this->table),
+        ];
+
+        // The following validation fails, because the
+        // current locale is "en", so we actually set
+        // ['en' => '\existing-slug-en'] etc.
+
+        $validation = Validator::make([
+            'slug' => '\existing-slug-en',
+            'name' => '\existing-name-en',
+        ], $rules);
+
+        $this->assertTrue($validation->fails());
+
+        // The following validation passes, because the
+        // current locale is "en", so we actually set
+        // ['en' => '\existing-slug-nl'] etc.
+
+        $validation = Validator::make([
+            'slug' => '\existing-slug-nl',
+            'name' => '\existing-name-nl',
+        ], $rules);
+
+        $this->assertTrue($validation->passes());
+    }
 }
