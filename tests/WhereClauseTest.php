@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Validator;
 // We need that instance to add custom error messages.
 // * * *
 
-class WhereClauseTestTest extends TestCase
+class WhereClauseTest extends TestCase
 {
     /** @test */
     public function it_accepts_where_clause()
