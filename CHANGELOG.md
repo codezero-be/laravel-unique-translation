@@ -2,6 +2,10 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 3.4.0 (2020-09-07)
+
+- Add support for Laravel 8
+
 ## 3.3.2 (2020-06-30)
 
 - Escape backslashes to work with LIKE queries (#13)
