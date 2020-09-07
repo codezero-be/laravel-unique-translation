@@ -1,11 +1,12 @@
 # Laravel Unique Translation
 
-[![GitHub release](https://img.shields.io/github/release/codezero-be/laravel-unique-translation.svg)]()
-[![License](https://img.shields.io/packagist/l/codezero/laravel-unique-translation.svg)]()
-[![Build Status](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/build.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/build-status/master)
-[![Code Coverage](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/codezero/laravel-unique-translation.svg)](https://packagist.org/packages/codezero/laravel-unique-translation)
+[![GitHub release](https://img.shields.io/github/release/codezero-be/laravel-unique-translation.svg?style=flat-square)](CHANGELOG.md)
+[![Laravel](https://img.shields.io/badge/laravel-8-red?style=flat-square)](https://laravel.com)
+[![License](https://img.shields.io/packagist/l/codezero/laravel-unique-translation.svg?style=flat-square)](LICENSE.md)
+[![Build Status](https://img.shields.io/scrutinizer/build/g/codezero-be/laravel-unique-translation/master?style=flat-square)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/build-status/master)
+[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/codezero-be/laravel-unique-translation/master?style=flat-square)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
+[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/quality/g/codezero-be/laravel-unique-translation/master?style=flat-square)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
+[![Total Downloads](https://img.shields.io/packagist/dt/codezero/laravel-unique-translation.svg?style=flat-square)](https://packagist.org/packages/codezero/laravel-unique-translation)
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R3UQ8V)
 
