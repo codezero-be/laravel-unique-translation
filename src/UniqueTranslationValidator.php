@@ -326,18 +326,22 @@ class UniqueTranslationValidator
      * @param string $key
      * @param string $extraValue
      *
-     * @return void
+     * @return \Illuminate\Database\Query\Builder
      */
     protected function addWhere($query, $key, $extraValue)
     {
         if ($extraValue === 'NULL') {
-            $query->whereNull($key);
-        } elseif ($extraValue === 'NOT_NULL') {
-            $query->whereNotNull($key);
-        } elseif (Str::startsWith($extraValue, '!')) {
-            $query->where($key, '!=', mb_substr($extraValue, 1));
-        } else {
-            $query->where($key, $extraValue);
+            return $query->whereNull($key);
         }
+
+        if ($extraValue === 'NOT_NULL') {
+            return $query->whereNotNull($key);
+        }
+
+        $isNegative = Str::startsWith($extraValue, '!');
+        $operator = $isNegative ? '!=' : '=';
+        $value = $isNegative ? mb_substr($extraValue, 1) : $extraValue;
+
+        return $query->where($key, $operator, $value);
     }
 }
