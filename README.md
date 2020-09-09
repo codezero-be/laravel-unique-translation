@@ -3,9 +3,9 @@
 [![GitHub release](https://img.shields.io/github/release/codezero-be/laravel-unique-translation.svg?style=flat-square)](CHANGELOG.md)
 [![Laravel](https://img.shields.io/badge/laravel-8-red?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
 [![License](https://img.shields.io/packagist/l/codezero/laravel-unique-translation.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/scrutinizer/build/g/codezero-be/laravel-unique-translation/master?style=flat-square)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/build-status/master)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/codezero-be/laravel-unique-translation/master?style=flat-square)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/quality/g/codezero-be/laravel-unique-translation/master?style=flat-square)](https://scrutinizer-ci.com/g/codezero-be/laravel-unique-translation/?branch=master)
+[![Build Status](https://img.shields.io/github/workflow/status/codezero-be/laravel-unique-translation/Tests/master?style=flat-square&logo=github&logoColor=white&label=tests)](https://github.com/codezero-be/laravel-unique-translation/actions)
+[![Code Coverage](https://img.shields.io/codacy/coverage/bb5f876fb1a94aa0a426fd31a2656e5b/master?style=flat-square)](https://app.codacy.com/gh/codezero-be/laravel-unique-translation)
+[![Code Quality](https://img.shields.io/codacy/grade/bb5f876fb1a94aa0a426fd31a2656e5b/master?style=flat-square)](https://app.codacy.com/gh/codezero-be/laravel-unique-translation)
 [![Total Downloads](https://img.shields.io/packagist/dt/codezero/laravel-unique-translation.svg?style=flat-square)](https://packagist.org/packages/codezero/laravel-unique-translation)
 
 [![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/R6R3UQ8V)
