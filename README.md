@@ -27,7 +27,7 @@ This package also supports [`spatie/nova-translatable`](https://github.com/spati
 -   PHP ^7.2
 -   MySQL >= 5.6
 -   [Laravel](https://laravel.com/) >= 6 (use v1.* for Laravel 5.*)
--   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.2
+-   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.4
 -   [spatie/nova-translatable](https://github.com/spatie/nova-translatable/) ^3.0
 
 ## 📦 Installation
