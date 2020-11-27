@@ -2,6 +2,10 @@
 
 All Notable changes to `UniqueTranslation` will be documented in this file.
 
+## 3.5.0 (2020-11-27)
+
+- Add support for PHP 8
+
 ## 3.4.0 (2020-09-07)
 
 - Add support for Laravel 8
