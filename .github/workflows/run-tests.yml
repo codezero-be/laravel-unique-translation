@@ -62,7 +62,7 @@ jobs:
           coverage: pcov
 
       - name: Install dependencies
-        run: composer update --with="illuminate/framework:${{ matrix.laravel }}" --with="orchestra/testbench:${{ matrix.testbench }}" --prefer-dist --no-interaction --no-progress
+        run: composer update --with="orchestra/testbench:${{ matrix.testbench }}" --prefer-dist --no-interaction --no-progress
 
       - name: Execute tests
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
