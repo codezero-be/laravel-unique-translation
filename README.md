@@ -1,7 +1,7 @@
 # Laravel Unique Translation
 
 [![GitHub release](https://img.shields.io/github/release/codezero-be/laravel-unique-translation.svg?style=flat-square)](CHANGELOG.md)
-[![Laravel](https://img.shields.io/badge/laravel-8-red?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
+[![Laravel](https://img.shields.io/badge/laravel-9-red?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
 [![License](https://img.shields.io/packagist/l/codezero/laravel-unique-translation.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/github/workflow/status/codezero-be/laravel-unique-translation/Tests/master?style=flat-square&logo=github&logoColor=white&label=tests)](https://github.com/codezero-be/laravel-unique-translation/actions)
 [![Code Coverage](https://img.shields.io/codacy/coverage/bb5f876fb1a94aa0a426fd31a2656e5b/master?style=flat-square)](https://app.codacy.com/gh/codezero-be/laravel-unique-translation)
@@ -27,7 +27,7 @@ This package also supports [`spatie/nova-translatable`](https://github.com/spati
 -   PHP ^7.2 or PHP ^8.0
 -   MySQL >= 5.6
 -   [Laravel](https://laravel.com/) >= 6 (use v1.* for Laravel 5.*)
--   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.4
+-   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.4|^5.0
 -   [spatie/nova-translatable](https://github.com/spatie/nova-translatable/) ^3.0
 
 ## 📦 Installation
