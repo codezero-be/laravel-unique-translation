@@ -46,6 +46,27 @@ class UniqueTranslationTest extends TestCase
     }
 
     /** @test */
+    public function search_is_case_insensitive()
+    {
+        Model::create([
+            'slug' => ['en' => 'existing-slug-en', 'nl' => 'existing-slug-nl'],
+            'name' => ['en' => 'existing-name-en', 'nl' => 'existing-name-nl'],
+        ]);
+
+        $rules = [
+            'slug' => "{$this->rule}:{$this->table}",
+            'name' => UniqueTranslationRule::for($this->table),
+        ];
+
+        $validation = Validator::make([
+            'slug' => 'Existing-slug-en',
+            'name' => 'Existing-name-en',
+        ], $rules);
+
+        $this->assertTrue($validation->fails());
+    }
+
+    /** @test */
     public function it_checks_if_the_translation_for_a_specific_locale_is_unique()
     {
         Model::create([
