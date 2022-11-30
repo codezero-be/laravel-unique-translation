@@ -40,8 +40,8 @@ This package also supports [`spatie/nova-translatable`](https://github.com/spati
 ## ✅ Requirements
 
 -   PHP ^7.2 or PHP ^8.0
--   MySQL >= 5.6
--   [Laravel](https://laravel.com/) >= 6 (use v1.* for Laravel 5.*)
+-   MySQL >= 5.7
+-   [Laravel](https://laravel.com/) >= 6
 -   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.4|^5.0
 -   [spatie/nova-translatable](https://github.com/spatie/nova-translatable/) ^3.0
 
