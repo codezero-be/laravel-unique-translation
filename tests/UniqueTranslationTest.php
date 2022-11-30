@@ -322,4 +322,25 @@ class UniqueTranslationTest extends TestCase
 
         $this->assertTrue($validation->passes());
     }
+
+    /** @test */
+    public function it_handles_arabic_language()
+    {
+        Model::create([
+            'slug' => ['ar' => 'جديد'],
+            'name' => ['ar' => 'جديد'],
+        ]);
+
+        $rules = [
+            'slug.*' => "{$this->rule}:{$this->table}",
+            'name.*' => UniqueTranslationRule::for($this->table),
+        ];
+
+        $validation = Validator::make([
+            'slug' => ['ar' => 'جديد'],
+            'name' => ['ar' => 'جديد'],
+        ], $rules);
+
+        $this->assertTrue($validation->fails());
+    }
 }
