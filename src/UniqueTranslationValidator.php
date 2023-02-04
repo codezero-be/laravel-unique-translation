@@ -234,10 +234,13 @@ class UniqueTranslationValidator
         $escaped = DB::getDriverName() === 'sqlite' ? '\\\\' : '\\\\\\\\';
         $value = str_replace('\\', $escaped, $value);
 
+        // Support PostgreSQL case insensitive queries with ILIKE
+        $operator = DB::getDriverName() === 'pgsql' ? 'ILIKE' : 'LIKE';
+
         return DB::connection($connection)->table($table)
-            ->where(function ($query) use ($column, $locale, $value) {
-                $query->where($column, 'LIKE', "%\"{$locale}\": \"{$value}\"%")
-                    ->orWhere($column, 'LIKE', "%\"{$locale}\":\"{$value}\"%");
+            ->where(function ($query) use ($column, $operator, $locale, $value) {
+                $query->where($column, $operator, "%\"{$locale}\": \"{$value}\"%")
+                    ->orWhere($column, $operator, "%\"{$locale}\":\"{$value}\"%");
             });
     }
 
