@@ -231,7 +231,8 @@ class UniqueTranslationValidator
     {
         // Properly escape backslashes to work with LIKE queries...
         // See: https://stackoverflow.com/questions/14926386/how-to-search-for-slash-in-mysql-and-why-escaping-not-required-for-wher
-        $value = str_replace('\\', '\\\\\\\\', $value);
+        $escaped = DB::getDriverName() === 'sqlite' ? '\\\\' : '\\\\\\\\';
+        $value = str_replace('\\', $escaped, $value);
 
         return DB::connection($connection)->table($table)
             ->where(function ($query) use ($column, $locale, $value) {
