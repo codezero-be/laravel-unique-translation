@@ -20,10 +20,14 @@ class UniqueTranslationValidator
      * @return bool
      */
     public function validate($attribute, $value, $parameters, $validator)
-    {
-        list ($name, $locale) = $this->isNovaTranslation($attribute)
+    {		
+        list ($name, $locale) = $this->isNovaTranslation($attribute) 
             ? $this->getNovaAttributeNameAndLocale($attribute)
-            : $this->getArrayAttributeNameAndLocale($attribute);
+            : (
+				$this->isFilamentTranslation($attribute) 
+				? $this->getFilamentAttributeNameAndLocale($attribute) 
+				: $this->getArrayAttributeNameAndLocale($attribute)
+			);
 
         if ($this->isUnique($value, $name, $locale, $parameters)) {
             return true;
@@ -74,7 +78,7 @@ class UniqueTranslationValidator
     }
 
     /**
-     * Get the attribute name and locale of a Nova translation field.
+     * Get the attribute name and locale of a Filament translation field.
      *
      * @param string $attribute
      *
@@ -85,6 +89,32 @@ class UniqueTranslationValidator
         $attribute = str_replace('translations_', '', $attribute);
 
         return $this->getAttributeNameAndLocale($attribute, '_');
+    }
+
+    /**
+     * Check if the attribute is a Filament translation field name.
+     *
+     * @param string $attribute
+     *
+     * @return bool
+     */
+    protected function isFilamentTranslation($attribute)
+    {
+        return strpos($attribute, 'data.') === 0;
+    }
+
+    /**
+     * Get the attribute name and locale of a Filament translation field.
+     *
+     * @param string $attribute
+     *
+     * @return array
+     */
+    protected function getFilamentAttributeNameAndLocale($attribute)
+    {
+        $attribute = str_replace('data.', '', $attribute);
+		@list($locale, $name) = @explode('.', $attribute);
+        return [$name, $locale];
     }
 
     /**
@@ -210,7 +240,7 @@ class UniqueTranslationValidator
         $query = $this->findTranslation($connection, $table, $column, $locale, $value);
         $query = $this->ignore($query, $ignoreColumn, $ignoreValue);
         $query = $this->addConditions($query, $this->getUniqueExtra($parameters));
-
+	
         $isUnique = $query->count() === 0;
 
         return $isUnique;
