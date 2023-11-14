@@ -35,7 +35,7 @@ But then you want to make sure each translation is unique for its language.
 
 That's where this package comes in to play.
 
-This package also supports [`spatie/nova-translatable`](https://github.com/spatie/nova-translatable/) in case you are using [Laravel Nova](https://nova.laravel.com/).
+This package also supports [`spatie/nova-translatable`](https://github.com/spatie/nova-translatable/) in case you are using [Laravel Nova](https://nova.laravel.com/) and [`filamentphp/spatie-laravel-translatable-plugin`](https://github.com/filamentphp/spatie-laravel-translatable-plugin) in case you are using [Filament](https://filamentphp.com/).
 
 ## ✅ Requirements
 
@@ -44,6 +44,7 @@ This package also supports [`spatie/nova-translatable`](https://github.com/spati
 -   [Laravel](https://laravel.com/) >= 6
 -   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.4|^5.0
 -   [spatie/nova-translatable](https://github.com/spatie/nova-translatable/) ^3.0
+-   [filamentphp/spatie-laravel-translatable-plugin](https://github.com/filamentphp/spatie-laravel-translatable-plugin) ^3.0
 
 ## 📦 Installation
 
@@ -203,6 +204,26 @@ If you are using [Laravel Nova](https://nova.laravel.com/) in combination with  
 Text::make(__('Slug'), 'slug')
   ->creationRules('unique_translation:posts,slug')
   ->updateRules('unique_translation:posts,slug,{{resourceId}}');
+```
+
+### ☑️ Filament
+
+If you are using [Filament](https://filamentphp.com/) in combination with [`filamentphp/spatie-laravel-translatable-plugin`](https://github.com/filamentphp/spatie-laravel-translatable-plugin), then you can add the validation rule like this:
+
+```php
+TextInput::make('slug')
+  ->title(__('Slug'))
+  ->rules([
+    UniqueTranslationRule::for('posts', 'slug')
+  ])
+```
+
+```php
+TextInput::make('slug')
+  ->title(__('Slug'))
+  ->rules([
+    fn (Get $get) => UniqueTranslationRule::for('posts', 'slug')->ignore($get('id'))
+  ])
 ```
 
 ## 🖥 Example
