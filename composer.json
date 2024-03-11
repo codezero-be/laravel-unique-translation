@@ -1,5 +1,5 @@
 {
-    "name": "theupriser/laravel-unique-translation",
+    "name": "codezero/laravel-unique-translation",
     "description": "Check if a translated value in a JSON column is unique in the database.",
     "keywords": [
         "translation",
