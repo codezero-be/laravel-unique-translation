@@ -20,12 +20,12 @@ class UniqueTranslationValidator
      * @return bool
      */
     public function validate($attribute, $value, $parameters, $validator)
-    {		
-        list ($name, $locale) = $this->isNovaTranslation($attribute) 
+    {
+        list ($name, $locale) = $this->isNovaTranslation($attribute)
             ? $this->getNovaAttributeNameAndLocale($attribute)
             : (
-				$this->isFilamentTranslation($attribute) 
-				? $this->getFilamentAttributeNameAndLocale($attribute) 
+				$this->isFilamentTranslation($attribute)
+				? $this->getFilamentAttributeNameAndLocale($attribute)
 				: $this->getArrayAttributeNameAndLocale($attribute)
 			);
 
@@ -113,7 +113,7 @@ class UniqueTranslationValidator
     protected function getFilamentAttributeNameAndLocale($attribute)
     {
         $attribute = str_replace('data.', '', $attribute);
-		@list($locale, $name) = @explode('.', $attribute);
+        @list($name, $locale) = @explode('.', $attribute);
         return [$name, $locale];
     }
 
@@ -240,7 +240,7 @@ class UniqueTranslationValidator
         $query = $this->findTranslation($connection, $table, $column, $locale, $value);
         $query = $this->ignore($query, $ignoreColumn, $ignoreValue);
         $query = $this->addConditions($query, $this->getUniqueExtra($parameters));
-	
+
         $isUnique = $query->count() === 0;
 
         return $isUnique;
