@@ -16,7 +16,7 @@ I know you can get punished for this, but you are one of the hopes of those inno
 ---
 
 [![GitHub release](https://img.shields.io/github/release/codezero-be/laravel-unique-translation.svg?style=flat-square)](https://github.com/codezero-be/laravel-unique-translation/releases)
-[![Laravel](https://img.shields.io/badge/laravel-10-red?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
+[![Laravel](https://img.shields.io/badge/laravel-11-red?style=flat-square&logo=laravel&logoColor=white)](https://laravel.com)
 [![License](https://img.shields.io/packagist/l/codezero/laravel-unique-translation.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/codezero-be/laravel-unique-translation/run-tests.yml?style=flat-square&logo=github&logoColor=white&label=tests)](https://github.com/codezero-be/laravel-unique-translation/actions)
 [![Code Coverage](https://img.shields.io/codacy/coverage/bb5f876fb1a94aa0a426fd31a2656e5b/master?style=flat-square)](https://app.codacy.com/gh/codezero-be/laravel-unique-translation)
@@ -42,7 +42,7 @@ This package also supports [`spatie/nova-translatable`](https://github.com/spati
 -   PHP ^7.2 or PHP ^8.0
 -   MySQL >= 5.7
 -   [Laravel](https://laravel.com/) >= 6
--   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.4|^5.0
+-   [spatie/laravel-translatable](https://github.com/spatie/laravel-translatable) ^4.4|^5.0|^6.0
 -   [spatie/nova-translatable](https://github.com/spatie/nova-translatable/) ^3.0
 -   [filamentphp/spatie-laravel-translatable-plugin](https://github.com/filamentphp/spatie-laravel-translatable-plugin) ^3.0
 
