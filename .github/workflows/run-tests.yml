@@ -79,10 +79,3 @@ jobs:
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
         env:
           DB_PORT: ${{ job.services.mysql.ports[3306] }}
-
-      - if: github.event_name == 'push'
-        name: Run Codacy Coverage Reporter
-        uses: codacy/codacy-coverage-reporter-action@master
-        with:
-          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-          coverage-reports: coverage.xml
