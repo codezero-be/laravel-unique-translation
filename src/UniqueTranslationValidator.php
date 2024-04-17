@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 
 class UniqueTranslationValidator
 {
@@ -25,7 +26,7 @@ class UniqueTranslationValidator
             ? $this->getNovaAttributeNameAndLocale($attribute)
             : (
 				$this->isFilamentTranslation($attribute)
-				? $this->getFilamentAttributeNameAndLocale($attribute)
+				? $this->getFilamentAttributeNameAndLocale($attribute, $validator)
 				: $this->getArrayAttributeNameAndLocale($attribute)
 			);
 
@@ -110,10 +111,18 @@ class UniqueTranslationValidator
      *
      * @return array
      */
-    protected function getFilamentAttributeNameAndLocale($attribute)
+    protected function getFilamentAttributeNameAndLocale($attribute, $validator)
     {
         $attribute = str_replace('data.', '', $attribute);
+
+        $dataValidator = $validator->getData();
+
         @list($name, $locale) = @explode('.', $attribute);
+
+        if ($locale === null && Arr::exists($dataValidator, 'activeLocale')) {
+            $locale = $dataValidator['activeLocale'];
+        }
+
         return [$name, $locale];
     }
 
